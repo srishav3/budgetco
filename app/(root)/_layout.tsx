@@ -19,13 +19,27 @@ export default function RootGroupLayout() {
   }, []);
 
   if (!isLoaded) return null;
+
   if (!isSignedIn) return <Redirect href="/sign-in" />;
-  if (!minLoadDone || needsOnboarding === null) return (
-    <View className="flex-1 bg-brand-body items-center justify-center">
-      <ActivityIndicator size="large" color="#1A1D26" />
-    </View>
-  );
-  if (needsOnboarding && pathname !== "/onboarding") return <Redirect href="/(root)/onboarding" />;
+
+  if (!minLoadDone || needsOnboarding === null) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: "#F8F7F2",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <ActivityIndicator size="large" color="#1A1D26" />
+      </View>
+    );
+  }
+
+  if (needsOnboarding && pathname !== "/onboarding") {
+    return <Redirect href="/(root)/onboarding" />;
+  }
 
   return <Slot />;
 }
