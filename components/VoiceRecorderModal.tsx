@@ -14,7 +14,7 @@ import {
 } from "expo-audio";
 import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Modal, Text, TouchableOpacity, View } from "react-native";
 import Animated, {
   Easing,
@@ -25,7 +25,13 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
-type Status = "idle" | "recording" | "processing" | "error";
+type Status = "idle" | "preparing" | "recording" | "processing" | "error";
+
+const MIN_RECORDING_DURATION_MS = 1000;
+
+function wait(duration: number) {
+  return new Promise((resolve) => setTimeout(resolve, duration));
+}
 
 function PulseRing({ delay, active }: { delay: number; active: boolean }) {
   const progress = useSharedValue(0);
@@ -128,6 +134,8 @@ export function VoiceRecorderModal({
   const recorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
   const [status, setStatus] = useState<Status>("idle");
   const [seconds, setSeconds] = useState(0);
+  const recordingStartedAt = useRef<number | null>(null);
+  const actionInProgress = useRef(false);
 
   const orbScale = useSharedValue(1);
 
@@ -135,16 +143,32 @@ export function VoiceRecorderModal({
     if (!visible) {
       setStatus("idle");
       setSeconds(0);
+      recordingStartedAt.current = null;
       return;
     }
+    let active = true;
+    setStatus("preparing");
     (async () => {
-      const { granted } = await requestRecordingPermissionsAsync();
-      if (!granted) {
-        setStatus("error");
-        return;
+      try {
+        const { granted } = await requestRecordingPermissionsAsync();
+        if (!granted) {
+          if (active) setStatus("error");
+          return;
+        }
+        await setAudioModeAsync({
+          allowsRecording: true,
+          playsInSilentMode: true,
+        });
+        if (active) setStatus("idle");
+      } catch (err) {
+        console.error("Voice recorder setup failed:", err);
+        if (active) setStatus("error");
       }
-      await setAudioModeAsync({ allowsRecording: true, playsInSilentMode: true });
     })();
+
+    return () => {
+      active = false;
+    };
   }, [visible]);
 
   useEffect(() => {
@@ -173,17 +197,38 @@ export function VoiceRecorderModal({
   }));
 
   const startRecording = async () => {
+    if (status !== "idle" || actionInProgress.current) return;
+
+    actionInProgress.current = true;
     setSeconds(0);
-    await recorder.prepareToRecordAsync();
-    recorder.record();
-    setStatus("recording");
+    setStatus("preparing");
+    try {
+      await recorder.prepareToRecordAsync();
+      recorder.record();
+      recordingStartedAt.current = Date.now();
+      setStatus("recording");
+    } catch (err) {
+      console.error("Voice recording failed to start:", err);
+      setStatus("error");
+    } finally {
+      actionInProgress.current = false;
+    }
   };
 
   const stopRecording = async () => {
-    setStatus("processing");
-    await recorder.stop();
+    const startedAt = recordingStartedAt.current;
+    if (startedAt === null || actionInProgress.current) return;
 
+    actionInProgress.current = true;
+    setStatus("processing");
     try {
+      const remaining =
+        MIN_RECORDING_DURATION_MS - (Date.now() - startedAt);
+      if (remaining > 0) await wait(remaining);
+
+      await recorder.stop();
+      recordingStartedAt.current = null;
+
       const uri = recorder.uri;
       if (!uri) throw new Error("No recording captured");
 
@@ -193,13 +238,42 @@ export function VoiceRecorderModal({
       onExtracted(result);
       onClose();
     } catch (err) {
-      console.error("Voice extraction failed:", err);
+      recordingStartedAt.current = null;
+      console.error("Voice recording or extraction failed:", err);
       setStatus("error");
+    } finally {
+      actionInProgress.current = false;
     }
   };
 
+  const closeModal = async () => {
+    if (actionInProgress.current) return;
+
+    const startedAt = recordingStartedAt.current;
+    if (startedAt !== null) {
+      actionInProgress.current = true;
+      try {
+        const remaining =
+          MIN_RECORDING_DURATION_MS - (Date.now() - startedAt);
+        if (remaining > 0) await wait(remaining);
+        await recorder.stop();
+      } catch (err) {
+        console.error("Could not stop canceled voice recording:", err);
+      } finally {
+        recordingStartedAt.current = null;
+        actionInProgress.current = false;
+      }
+    }
+    onClose();
+  };
+
   return (
-    <Modal visible={visible} animationType="slide" transparent>
+    <Modal
+      visible={visible}
+      animationType="slide"
+      transparent
+      onRequestClose={closeModal}
+    >
       <View
         style={{
           flex: 1,
@@ -259,7 +333,7 @@ export function VoiceRecorderModal({
               </Text>
 
               <TouchableOpacity
-                onPress={onClose}
+                onPress={closeModal}
                 style={{
                   backgroundColor: "rgba(255,255,255,0.1)",
                   borderRadius: 12,
@@ -319,6 +393,8 @@ export function VoiceRecorderModal({
                   ? "Listening…"
                   : status === "processing"
                   ? "Understanding that…"
+                  : status === "preparing"
+                  ? "Getting ready…"
                   : "Tell me about a transaction"}
               </Text>
 
@@ -335,6 +411,8 @@ export function VoiceRecorderModal({
                   ? `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`
                   : status === "processing"
                   ? "Transcribing and extracting the details"
+                  : status === "preparing"
+                  ? "Preparing microphone"
                   : '"I spent 400 on groceries yesterday"'}
               </Text>
 
@@ -371,7 +449,7 @@ export function VoiceRecorderModal({
                         ? RECORDING_GRADIENT
                         : [AI_GRADIENT[1], AI_GRADIENT[0]]
                     }
-                    disabled={status === "processing"}
+                    disabled={status === "preparing" || status === "processing"}
                     onPress={
                       status === "recording" ? stopRecording : startRecording
                     }
@@ -380,8 +458,8 @@ export function VoiceRecorderModal({
               </View>
 
               <TouchableOpacity
-                onPress={onClose}
-                disabled={status === "processing"}
+                onPress={closeModal}
+                disabled={status === "preparing" || status === "processing"}
               >
                 <Text
                   style={{
