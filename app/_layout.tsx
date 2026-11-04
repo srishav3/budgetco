@@ -1,38 +1,25 @@
-// Import Clerk's authentication provider for Expo
-import { ClerkProvider } from '@clerk/expo'
+import { queryClient } from "@/lib/query/client";
+import { ClerkProvider } from "@clerk/expo";
+import { tokenCache } from "@clerk/expo/token-cache";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { Slot } from "expo-router";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import "../global.css";
 
-// Import Clerk's token storage implementation for Expo
-import { tokenCache } from '@clerk/expo/token-cache'
+const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 
-// Import Expo Router's placeholder for the currently active route
-import { Slot } from 'expo-router'
-
-// Read the Clerk publishable key from environment variables
-const publishableKey =
-  process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!
-
-// Make sure the key actually exists at runtime
 if (!publishableKey) {
-  throw new Error(
-    'Add your Clerk Publishable Key to the .env file'
-  )
+  throw new Error("Add your Clerk Publishable Key to the .env file");
 }
 
-// Parent layout of the entire application
 export default function RootLayout() {
-
   return (
-
-    // Make Clerk authentication available
-    // to the entire application
-    <ClerkProvider
-      publishableKey={publishableKey}
-      tokenCache={tokenCache}
-    >
-
-      {/* Render whichever route is currently active */}
-      <Slot />
-
-    </ClerkProvider>
-  )
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <QueryClientProvider client={queryClient}>
+        <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
+          <Slot />
+        </ClerkProvider>
+      </QueryClientProvider>
+    </GestureHandlerRootView>
+  );
 }

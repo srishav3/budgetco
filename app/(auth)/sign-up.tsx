@@ -5,15 +5,16 @@ import { useRouter, Link } from "expo-router";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
+    ActivityIndicator,
+    Image,
     KeyboardAvoidingView,
     Platform,
-    View,
-    Image,
+    ScrollView,
     Text,
     TextInput,
-    ScrollView,
+    TouchableOpacity,
+    View,
 } from "react-native";
-import { TouchableOpacity, ActivityIndicator } from "react-native";
 
 
 export default function SignUpScreen() {

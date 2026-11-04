@@ -137,9 +137,10 @@ export default function OnboardingScreen() {
           <Image
             source={require("../../assets/images/budgetco.png")}
             style={{
-              width: 128,
-              height: 56,
-              marginBottom: 40,
+              width: 200,
+              height: 150,
+              marginBottom: 32,
+              alignSelf: "center",
             }}
             resizeMode="contain"
           />
@@ -152,7 +153,7 @@ export default function OnboardingScreen() {
               marginBottom: 8,
             }}
           >
-            Let's get you set up
+            Let&apos;s get you set up
           </Text>
 
           <Text
