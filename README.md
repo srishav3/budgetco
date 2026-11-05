@@ -41,48 +41,48 @@ Most personal finance apps demand tedious manual data entry, leading to low adop
 ┌─────────────────────────────────────────────────────────────────┐
 │                        CLIENT (Expo/RN)                         │
 │                                                                 │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐                     │
-│  │  Camera   │  │   Mic    │  │  Manual  │  ← Input Methods    │
-│  └────┬─────┘  └────┬─────┘  └────┬─────┘                     │
-│       │ base64       │ base64      │ form                      │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐                       │
+│  │  Camera  │  │   Mic    │  │  Manual  │  ← Input Methods      │
+│  └────┬─────┘  └────┬─────┘  └────┬─────┘                       │
+│       │ base64       │ base64      │ form                       │
 │       ▼              ▼             │                            │
 │  ┌─────────────────────────┐       │                            │
-│  │   Gemini 3.5 Flash Lite │       │  ← Structured Extraction  │
+│  │   Gemini 3.5 Flash Lite │       │  ← Structured Extraction   │
 │  │   (Vision / Audio API)  │       │    via JSON Schema         │
 │  └──────────┬──────────────┘       │                            │
 │             │ ExtractedTransaction │                            │
 │             ▼                      ▼                            │
-│       ┌────────────────────────────────┐                       │
-│       │   React Hook Form + Zod        │  ← Validation Layer   │
-│       └───────────────┬────────────────┘                       │
+│       ┌────────────────────────────────┐                        │
+│       │   React Hook Form + Zod        │  ← Validation Layer    │
+│       └───────────────┬────────────────┘                        │
 │                       │                                         │
 │                       ▼                                         │
-│       ┌────────────────────────────────┐                       │
-│       │  TanStack Query Mutation       │  ← Optimistic Cache   │
+│       ┌────────────────────────────────┐                        │
+│       │  TanStack Query Mutation       │  ← Optimistic Cache    │
 │       │  (useCreateTransaction)        │    Invalidation        │
-│       └───────────────┬────────────────┘                       │
+│       └───────────────┬────────────────┘                        │
 │                       │ Clerk JWT                               │
 └───────────────────────┼─────────────────────────────────────────┘
                         │
                         ▼
 ┌───────────────────────────────────────────────────────────────┐
-│                    SUPABASE (PostgreSQL)                       │
+│                    SUPABASE (PostgreSQL)                      │
 │                                                               │
-│  ┌──────────┐  ┌──────────────┐  ┌──────────┐  ┌──────────┐ │
-│  │  users    │  │ transactions │  │ accounts │  │ budgets  │ │
-│  └──────────┘  └──────────────┘  └──────────┘  └──────────┘ │
+│  ┌──────────┐  ┌──────────────┐  ┌──────────┐  ┌──────────┐   │
+│  │  users   │  │ transactions │  │ accounts │  │ budgets  │   │
+│  └──────────┘  └──────────────┘  └──────────┘  └──────────┘   │
 │        ↑              ↑                              ↑        │
 │        │         RLS Policies                        │        │
 │        │        (auth.jwt()->>'sub')                 │        │
 │        │                                             │        │
-│  ┌─────────────────────────────────────────────────────────┐ │
-│  │              Supabase Edge Functions (Deno)              │ │
-│  │  ┌─────────────────────┐  ┌──────────────────────────┐  │ │
-│  │  │ check-budget-alerts │  │     weekly-tips           │  │ │
-│  │  │ (Daily cron)        │  │     (Weekly cron)         │  │ │
-│  │  │ → Resend emails     │  │     → Gemini → Resend     │  │ │
-│  │  └─────────────────────┘  └──────────────────────────┘  │ │
-│  └─────────────────────────────────────────────────────────┘ │
+│  ┌─────────────────────────────────────────────────────────┐  │
+│  │              Supabase Edge Functions (Deno)             │  │
+│  │  ┌─────────────────────┐  ┌──────────────────────────┐  │  │
+│  │  │ check-budget-alerts │  │     weekly-tips          │  │  │
+│  │  │ (Daily cron)        │  │     (Weekly cron)        │  │  │
+│  │  │ → Resend emails     │  │     → Gemini → Resend    │  │  │
+│  │  └─────────────────────┘  └──────────────────────────┘  │  │
+│  └─────────────────────────────────────────────────────────┘  │
 └───────────────────────────────────────────────────────────────┘
 ```
 
