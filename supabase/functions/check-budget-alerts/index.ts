@@ -3,9 +3,9 @@
 // first time they cross 80%, then again the first time they cross 100% —
 // each threshold fires once per calendar month via last_alert_threshold /
 // last_alert_sent on the budgets row.
-import { wrapEmail } from "../_shared/emailLayout";
-import { sendEmail } from "../_shared/resend";
-import { createSupabaseAdmin } from "../_shared/supabaseAdmin";
+import { wrapEmail } from "../_shared/emailLayout.ts";
+import { sendEmail } from "../_shared/resend.ts";
+import { createSupabaseAdmin } from "../_shared/supabaseAdmin.ts";
 
 // Ordered highest-first so a user who jumps straight past 100% only gets the
 // 100% email, not both.
