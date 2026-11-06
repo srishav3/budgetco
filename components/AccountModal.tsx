@@ -159,9 +159,8 @@ export function AccountModal({
       <TouchableOpacity
         onPress={handleSave}
         disabled={saving}
-        className={`bg-[#1A1D26] rounded-2xl py-4 items-center mb-3 shadow-sm shadow-black/10 ${
-          saving ? "opacity-70" : "active:opacity-90"
-        }`}
+        className="bg-[#1A1D26] rounded-2xl py-4 items-center mb-3 shadow-sm shadow-black/10"
+        style={{ opacity: saving ? 0.7 : 1 }}
         activeOpacity={0.85}
       >
         <Text className="text-white text-sm font-semibold tracking-wide">

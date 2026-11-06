@@ -18,26 +18,36 @@ export function PillGroup<T extends string>({
   scrollable?: boolean;
 }) {
   const row = (
-    <View className="flex-row gap-2 py-0.5">
+    <View style={{ flexDirection: "row", gap: 8, paddingVertical: 2 }}>
       {options.map((option) => {
         const isSelected = value === option.key;
         return (
           <TouchableOpacity
             key={option.key}
             onPress={() => onChange(option.key)}
-            className={`flex-row items-center gap-1.5 px-3.5 py-2 rounded-xl border ${
-              isSelected
-                ? "bg-[#1A1D26] border-[#1A1D26] shadow-sm shadow-black/10"
-                : "bg-white border-[#E8E6DF]"
-            }`}
             activeOpacity={0.8}
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 6,
+              paddingHorizontal: 14,
+              paddingVertical: 8,
+              borderRadius: 12,
+              borderWidth: 1,
+              backgroundColor: isSelected ? "#1A1D26" : "#FFFFFF",
+              borderColor: isSelected ? "#1A1D26" : "#E8E6DF",
+            }}
           >
-            {option.icon && <Text className="text-xs">{option.icon}</Text>}
+            {option.icon && (
+              <Text style={{ fontSize: 12 }}>{option.icon}</Text>
+            )}
 
             <Text
-              className={`text-xs font-semibold ${
-                isSelected ? "text-white" : "text-[#5C5F68]"
-              }`}
+              style={{
+                fontSize: 12,
+                fontWeight: "600",
+                color: isSelected ? "#FFFFFF" : "#5C5F68",
+              }}
             >
               {option.label}
             </Text>

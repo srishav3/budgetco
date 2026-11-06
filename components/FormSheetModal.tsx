@@ -46,7 +46,8 @@ export function FormSheetModal({
 
           <TouchableOpacity
             onPress={onClose}
-            className="py-2.5 items-center mt-1 active:opacity-70"
+            className="py-2.5 items-center mt-1"
+            activeOpacity={0.7}
           >
             <Text className="text-[#6B6E77] text-sm font-medium">
               Cancel

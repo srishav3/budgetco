@@ -241,6 +241,7 @@ export default function AddTransactionScreen() {
             <TouchableOpacity
               onPress={() => router.push("/(root)/(tabs)/profile")}
               className="bg-[#1A1D26] px-5 py-2.5 rounded-xl shadow-sm shadow-black/10"
+              activeOpacity={0.8}
             >
               <Text className="text-white text-xs font-semibold">
                 Go to Profile to Add Account
@@ -275,34 +276,41 @@ export default function AddTransactionScreen() {
 
             {/* Type toggle */}
             <View className="flex-row bg-white rounded-2xl border border-[#E8E6DF] p-1.5 mb-5 shadow-sm shadow-black/5">
-              {TYPE_OPTIONS.map((t) => (
-                <TouchableOpacity
-                  key={t.key}
-                  onPress={() => {
-                    setValue("type", t.key);
-                    setValue(
-                      "category",
-                      t.key === "INCOME"
-                        ? INCOME_CATEGORIES[0].key
-                        : EXPENSE_CATEGORIES[0].key
-                    );
-                  }}
-                  className={`flex-1 py-2.5 rounded-xl items-center ${
-                    type === t.key
-                      ? "bg-[#1A1D26] shadow-sm shadow-black/10"
-                      : "bg-transparent"
-                  }`}
-                  activeOpacity={0.8}
-                >
-                  <Text
-                    className={`text-xs font-semibold ${
-                      type === t.key ? "text-white" : "text-[#6B6E77]"
-                    }`}
+              {TYPE_OPTIONS.map((t) => {
+                const isSelected = type === t.key;
+                return (
+                  <TouchableOpacity
+                    key={t.key}
+                    onPress={() => {
+                      setValue("type", t.key);
+                      setValue(
+                        "category",
+                        t.key === "INCOME"
+                          ? INCOME_CATEGORIES[0].key
+                          : EXPENSE_CATEGORIES[0].key
+                      );
+                    }}
+                    style={{
+                      flex: 1,
+                      paddingVertical: 10,
+                      borderRadius: 12,
+                      alignItems: "center",
+                      backgroundColor: isSelected ? "#1A1D26" : "transparent",
+                    }}
+                    activeOpacity={0.8}
                   >
-                    {t.label}
-                  </Text>
-                </TouchableOpacity>
-              ))}
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        fontWeight: "600",
+                        color: isSelected ? "#FFFFFF" : "#6B6E77",
+                      }}
+                    >
+                      {t.label}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
             </View>
 
             {/* Amount */}
@@ -379,7 +387,8 @@ export default function AddTransactionScreen() {
             </Text>
             <TouchableOpacity
               onPress={() => setDatePickerOpen((v) => !v)}
-              className="flex-row items-center justify-between bg-white border border-[#E8E6DF] rounded-2xl px-4 py-3.5 mb-1 shadow-sm shadow-black/5 active:bg-[#F2EFE9]"
+              className="flex-row items-center justify-between bg-white border border-[#E8E6DF] rounded-2xl px-4 py-3.5 mb-1 shadow-sm shadow-black/5"
+              activeOpacity={0.7}
             >
               <Text className="text-sm font-medium text-[#1A1D26]">
                 {format(date, "d MMM yyyy")}
@@ -429,9 +438,8 @@ export default function AddTransactionScreen() {
             <TouchableOpacity
               onPress={handleSubmit(onSubmit)}
               disabled={saving}
-              className={`bg-[#1A1D26] rounded-2xl py-4 items-center mb-4 shadow-sm shadow-black/10 ${
-                saving ? "opacity-70" : "active:opacity-90"
-              }`}
+              className="bg-[#1A1D26] rounded-2xl py-4 items-center mb-4 shadow-sm shadow-black/10"
+              style={{ opacity: saving ? 0.7 : 1 }}
               activeOpacity={0.85}
             >
               <Text className="text-white text-base font-semibold tracking-wide">

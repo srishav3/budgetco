@@ -218,10 +218,11 @@ export default function TransactionsScreen() {
           <TouchableOpacity
             onPress={handleExport}
             disabled={exporting}
-            className="w-10 h-10 rounded-2xl bg-white border border-[#E8E6DF] items-center justify-center shadow-sm shadow-black/5 active:bg-[#F2EFE9]"
+            className="w-10 h-10 rounded-2xl bg-white border border-[#E8E6DF] items-center justify-center shadow-sm shadow-black/5"
             style={{
               opacity: exporting ? 0.7 : 1,
             }}
+            activeOpacity={0.7}
           >
             {exporting ? (
               <ActivityIndicator
@@ -274,17 +275,22 @@ export default function TransactionsScreen() {
               <TouchableOpacity
                 key={filter}
                 onPress={() => setActiveFilter(filter)}
-                className={`px-4 py-2 rounded-xl border ${
-                  selected
-                    ? "bg-[#1A1D26] border-[#1A1D26] shadow-sm shadow-black/10"
-                    : "bg-white border-[#E8E6DF]"
-                }`}
+                style={{
+                  paddingHorizontal: 16,
+                  paddingVertical: 8,
+                  borderRadius: 12,
+                  borderWidth: 1,
+                  backgroundColor: selected ? "#1A1D26" : "#FFFFFF",
+                  borderColor: selected ? "#1A1D26" : "#E8E6DF",
+                }}
                 activeOpacity={0.8}
               >
                 <Text
-                  className={`text-xs font-semibold ${
-                    selected ? "text-white" : "text-[#6B6E77]"
-                  }`}
+                  style={{
+                    fontSize: 12,
+                    fontWeight: "600",
+                    color: selected ? "#FFFFFF" : "#6B6E77",
+                  }}
                 >
                   {filter}
                 </Text>
@@ -302,17 +308,22 @@ export default function TransactionsScreen() {
           <View className="flex-row gap-2 py-0.5">
             <TouchableOpacity
               onPress={() => setActiveAccountId(null)}
-              className={`px-3.5 py-1.5 rounded-xl border ${
-                activeAccountId === null
-                  ? "bg-[#1A1D26] border-[#1A1D26]"
-                  : "bg-white border-[#E8E6DF]"
-              }`}
+              style={{
+                paddingHorizontal: 14,
+                paddingVertical: 6,
+                borderRadius: 12,
+                borderWidth: 1,
+                backgroundColor: activeAccountId === null ? "#1A1D26" : "#FFFFFF",
+                borderColor: activeAccountId === null ? "#1A1D26" : "#E8E6DF",
+              }}
               activeOpacity={0.8}
             >
               <Text
-                className={`text-xs font-medium ${
-                  activeAccountId === null ? "text-white" : "text-[#6B6E77]"
-                }`}
+                style={{
+                  fontSize: 12,
+                  fontWeight: "500",
+                  color: activeAccountId === null ? "#FFFFFF" : "#6B6E77",
+                }}
               >
                 All Accounts
               </Text>
@@ -325,17 +336,22 @@ export default function TransactionsScreen() {
                 <TouchableOpacity
                   key={account.id}
                   onPress={() => setActiveAccountId(account.id)}
-                  className={`px-3.5 py-1.5 rounded-xl border ${
-                    selected
-                      ? "bg-[#1A1D26] border-[#1A1D26]"
-                      : "bg-white border-[#E8E6DF]"
-                  }`}
+                  style={{
+                    paddingHorizontal: 14,
+                    paddingVertical: 6,
+                    borderRadius: 12,
+                    borderWidth: 1,
+                    backgroundColor: selected ? "#1A1D26" : "#FFFFFF",
+                    borderColor: selected ? "#1A1D26" : "#E8E6DF",
+                  }}
                   activeOpacity={0.8}
                 >
                   <Text
-                    className={`text-xs font-medium ${
-                      selected ? "text-white" : "text-[#6B6E77]"
-                    }`}
+                    style={{
+                      fontSize: 12,
+                      fontWeight: "500",
+                      color: selected ? "#FFFFFF" : "#6B6E77",
+                    }}
                   >
                     {account.name}
                   </Text>
@@ -371,7 +387,8 @@ export default function TransactionsScreen() {
 
           <TouchableOpacity
             onPress={loadData}
-            className="mt-5 bg-[#1A1D26] rounded-xl px-5 py-2.5 shadow-sm shadow-black/10 active:opacity-90"
+            className="mt-5 bg-[#1A1D26] rounded-xl px-5 py-2.5 shadow-sm shadow-black/10"
+            activeOpacity={0.85}
           >
             <Text className="text-white text-xs font-semibold">
               Retry
