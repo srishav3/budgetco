@@ -28,54 +28,29 @@ export function TransactionRow({
 
   const row = (
     <View
+      className="flex-row items-center bg-white rounded-2xl border border-[#E8E6DF] pl-3 pr-3.5 py-4 border-l-[3px]"
       style={{
-        flexDirection: "row",
-        alignItems: "center",
-        backgroundColor: "#FFFFFF",
-        borderRadius: 16,
-        borderWidth: 1,
-        borderColor: "#E8E6DF",
-        paddingLeft: 12,
-        paddingRight: 14,
-        paddingVertical: 16,
-        borderLeftWidth: 3,
         borderLeftColor: config.color,
       }}
     >
       <View
+        className="w-10 h-10 rounded-full items-center justify-center mr-3"
         style={{
-          width: 40,
-          height: 40,
-          borderRadius: 20,
-          alignItems: "center",
-          justifyContent: "center",
-          marginRight: 12,
           backgroundColor: `${config.color}22`,
         }}
       >
-        <Text style={{ fontSize: 18 }}>{config.icon}</Text>
+        <Text className="text-lg">{config.icon}</Text>
       </View>
 
-      <View style={{ flex: 1 }}>
+      <View className="flex-1">
         <Text
           numberOfLines={1}
-          style={{
-            color: "#1A1D26",
-            fontSize: 14,
-            fontWeight: "500",
-          }}
+          className="text-[#1A1D26] text-sm font-medium"
         >
           {tx.description || config.label}
         </Text>
 
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            gap: 6,
-            marginTop: 2,
-          }}
-        >
+        <View className="flex-row items-center gap-1.5 mt-0.5">
           <Feather
             name={INPUT_METHOD_ICON[tx.input_method]}
             size={11}
@@ -83,18 +58,15 @@ export function TransactionRow({
           />
 
           <View
+            className="px-1.5 py-0.5 rounded-full"
             style={{
-              paddingHorizontal: 6,
-              paddingVertical: 2,
-              borderRadius: 999,
               backgroundColor: `${config.color}1A`,
             }}
           >
             <Text
+              className="text-[10px] font-medium"
               style={{
                 color: config.color,
-                fontSize: 10,
-                fontWeight: "500",
               }}
             >
               {config.label}
@@ -102,20 +74,13 @@ export function TransactionRow({
           </View>
 
           {tx.is_flagged && (
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                gap: 4,
-                marginLeft: 4,
-              }}
-            >
+            <View className="flex-row items-center gap-1 ml-1">
               <Feather
                 name="alert-triangle"
                 size={11}
                 color="#FF6B4A"
               />
-              <Text style={{ color: "#FF6B4A", fontSize: 11 }}>
+              <Text className="text-[#FF6B4A] text-[11px]">
                 Flagged
               </Text>
             </View>
@@ -124,11 +89,9 @@ export function TransactionRow({
       </View>
 
       <Text
-        style={{
-          color: isIncome ? "#3DDC84" : "#FF6B4A",
-          fontSize: 14,
-          fontWeight: "500",
-        }}
+        className={`text-sm font-medium ${
+          isIncome ? "text-[#3DDC84]" : "text-[#FF6B4A]"
+        }`}
       >
         {isIncome ? "+" : "-"}
         {formatPrice(tx.amount, currency)}
@@ -137,24 +100,17 @@ export function TransactionRow({
   );
 
   if (!onDelete) {
-    return <View style={{ marginBottom: 10 }}>{row}</View>;
+    return <View className="mb-2.5">{row}</View>;
   }
 
   return (
-    <View style={{ marginBottom: 10 }}>
+    <View className="mb-2.5">
       <Swipeable
         overshootRight={false}
         renderRightActions={() => (
           <TouchableOpacity
             onPress={onDelete}
-            style={{
-              backgroundColor: "#FF6B4A",
-              borderRadius: 16,
-              marginLeft: 8,
-              width: 64,
-              alignItems: "center",
-              justifyContent: "center",
-            }}
+            className="bg-[#FF6B4A] rounded-2xl ml-2 w-16 items-center justify-center"
           >
             <Feather name="trash-2" size={18} color="#FFFFFF" />
           </TouchableOpacity>

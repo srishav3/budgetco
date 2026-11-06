@@ -44,13 +44,12 @@ export function AIActionCard({
   }));
 
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.85} style={{ flex: 1 }}>
+    <TouchableOpacity onPress={onPress} activeOpacity={0.85} className="flex-1">
       <View
         onLayout={(e) => setWidth(e.nativeEvent.layout.width)}
+        className="rounded-[18px] overflow-hidden"
         style={{
           height: CARD_HEIGHT,
-          borderRadius: 18,
-          overflow: "hidden",
           backgroundColor: colors[0],
         }}
       >
@@ -74,53 +73,22 @@ export function AIActionCard({
                 locations={[0, 0.25, 0.5, 0.75, 1]}
                 start={{ x: 0, y: 0.5 }}
                 end={{ x: 1, y: 0.5 }}
-                style={{ width: "100%", height: "100%" }}
+                className="w-full h-full"
               />
             </Animated.View>
           </View>
         )}
 
-        <View
-          style={{
-            position: "absolute",
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0,
-            padding: 16,
-          }}
-        >
-          <View
-            style={{
-              width: 36,
-              height: 36,
-              borderRadius: 18,
-              backgroundColor: "rgba(255, 255, 255, 0.2)",
-              alignItems: "center",
-              justifyContent: "center",
-              marginBottom: 12,
-            }}
-          >
+        <View className="absolute inset-0 p-4">
+          <View className="w-9 h-9 rounded-full bg-white/20 items-center justify-center mb-3">
             <Feather name={icon} size={16} color="#fff" />
           </View>
 
-          <Text
-            style={{
-              color: "#FFFFFF",
-              fontSize: 13,
-              fontWeight: "600",
-              marginBottom: 2,
-            }}
-          >
+          <Text className="text-white text-[13px] font-semibold mb-0.5">
             {title}
           </Text>
 
-          <Text
-            style={{
-              color: "rgba(255, 255, 255, 0.7)",
-              fontSize: 11,
-            }}
-          >
+          <Text className="text-white/70 text-[11px]">
             {subtitle}
           </Text>
         </View>

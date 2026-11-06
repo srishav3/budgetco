@@ -44,27 +44,19 @@ function MessageBubble({ message }: { message: ChatMessage }) {
 
   return (
     <View
-      style={{
-        marginBottom: 12,
-        maxWidth: "85%",
-        alignSelf: isUser ? "flex-end" : "flex-start",
-      }}
+      className={`mb-3 max-w-[85%] ${
+        isUser ? "self-end" : "self-start"
+      }`}
     >
       <View
-        style={{
-          borderRadius: 16,
-          paddingHorizontal: 14,
-          paddingVertical: 10,
-          backgroundColor: isUser ? "#0B0E14" : "#FFFFFF",
-          borderWidth: isUser ? 0 : 1,
-          borderColor: "#E8E6DF",
-        }}
+        className={`rounded-2xl px-3.5 py-2.5 ${
+          isUser ? "bg-[#0B0E14]" : "bg-white border border-[#E8E6DF]"
+        }`}
       >
         <Text
-          style={{
-            fontSize: 14,
-            color: isUser ? "#FFFFFF" : "#0B0E14",
-          }}
+          className={`text-sm ${
+            isUser ? "text-white" : "text-[#0B0E14]"
+          }`}
         >
           {message.content}
         </Text>
@@ -124,23 +116,11 @@ export default function AssistantScreen() {
 
   return (
     <SafeAreaView
-      style={{ flex: 1, backgroundColor: "#F5F4F0" }}
+      className="flex-1 bg-[#F5F4F0]"
       edges={["top"]}
     >
-      <View
-        style={{
-          paddingHorizontal: 20,
-          paddingTop: 12,
-          paddingBottom: 8,
-        }}
-      >
-        <Text
-          style={{
-            color: "#0B0E14",
-            fontSize: 20,
-            fontWeight: "600",
-          }}
-        >
+      <View className="px-5 pt-3 pb-2">
+        <Text className="text-[#0B0E14] text-xl font-semibold">
           Assistant
         </Text>
       </View>
@@ -148,7 +128,7 @@ export default function AssistantScreen() {
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : undefined}
         keyboardVerticalOffset={Platform.OS === "ios" ? -70 : 0}
-        style={{ flex: 1 }}
+        className="flex-1"
       >
         <FlatList
           data={messages}
@@ -161,18 +141,7 @@ export default function AssistantScreen() {
           }}
           ListFooterComponent={
             sending ? (
-              <View
-                style={{
-                  alignSelf: "flex-start",
-                  marginBottom: 12,
-                  backgroundColor: "#FFFFFF",
-                  borderWidth: 1,
-                  borderColor: "#E8E6DF",
-                  borderRadius: 16,
-                  paddingHorizontal: 14,
-                  paddingVertical: 10,
-                }}
-              >
+              <View className="self-start mb-3 bg-white border border-[#E8E6DF] rounded-2xl px-3.5 py-2.5">
                 <ActivityIndicator size="small" color="#4A9EFF" />
               </View>
             ) : null
@@ -180,33 +149,14 @@ export default function AssistantScreen() {
         />
 
         {messages.length <= 1 && (
-          <View
-            style={{
-              paddingHorizontal: 20,
-              paddingBottom: 8,
-              gap: 8,
-            }}
-          >
+          <View className="px-5 pb-2 gap-2">
             {SUGGESTED_PROMPTS.map((prompt) => (
               <TouchableOpacity
                 key={prompt}
                 onPress={() => sendMessage(prompt)}
-                style={{
-                  backgroundColor: "#FFFFFF",
-                  borderRadius: 12,
-                  borderWidth: 1,
-                  borderColor: "#E8E6DF",
-                  paddingHorizontal: 14,
-                  paddingVertical: 10,
-                  alignSelf: "flex-start",
-                }}
+                className="bg-white rounded-xl border border-[#E8E6DF] px-3.5 py-2.5 self-start"
               >
-                <Text
-                  style={{
-                    color: "#8A8D96",
-                    fontSize: 12,
-                  }}
-                >
+                <Text className="text-[#8A8D96] text-xs">
                   {prompt}
                 </Text>
               </TouchableOpacity>
@@ -214,34 +164,15 @@ export default function AssistantScreen() {
           </View>
         )}
 
-        {/* fixed padding to clear the native tab bar - simplest fix, adjust the 90 if it still overlaps on your device */}
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            gap: 8,
-            paddingHorizontal: 20,
-            paddingTop: 8,
-            paddingBottom: 90,
-          }}
-        >
+        {/* fixed padding to clear the native tab bar */}
+        <View className="flex-row items-center gap-2 px-5 pt-2 pb-[90px]">
           <TextInput
             value={input}
             onChangeText={setInput}
             placeholder="Ask about your money..."
             placeholderTextColor="#8A8D96"
             editable={!sending}
-            style={{
-              flex: 1,
-              backgroundColor: "#FFFFFF",
-              borderWidth: 1,
-              borderColor: "#E8E6DF",
-              borderRadius: 999,
-              paddingHorizontal: 16,
-              paddingVertical: 12,
-              fontSize: 14,
-              color: "#0B0E14",
-            }}
+            className="flex-1 bg-white border border-[#E8E6DF] rounded-full px-4 py-3 text-sm text-[#0B0E14]"
             onSubmitEditing={() => sendMessage(input)}
             returnKeyType="send"
           />
@@ -249,15 +180,9 @@ export default function AssistantScreen() {
           <TouchableOpacity
             onPress={() => sendMessage(input)}
             disabled={sending}
-            style={{
-              width: 44,
-              height: 44,
-              borderRadius: 22,
-              backgroundColor: "#0B0E14",
-              alignItems: "center",
-              justifyContent: "center",
-              opacity: sending ? 0.6 : 1,
-            }}
+            className={`w-11 h-11 rounded-full bg-[#0B0E14] items-center justify-center ${
+              sending ? "opacity-60" : "opacity-100"
+            }`}
           >
             <Feather name="arrow-up" size={18} color="#fff" />
           </TouchableOpacity>

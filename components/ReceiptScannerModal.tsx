@@ -58,126 +58,49 @@ export function ReceiptScannerModal({
 
   return (
     <Modal visible={visible} animationType="slide">
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: "#000000",
-        }}
-      >
+      <View className="flex-1 bg-black">
         {permission?.granted && (
-          <CameraView ref={cameraRef} style={{ flex: 1 }} facing="back" />
+          <CameraView ref={cameraRef} className="flex-1" facing="back" />
         )}
 
         {/* Scan-frame overlay */}
-        <View
-          style={{
-            position: "absolute",
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0,
-            alignItems: "center",
-            justifyContent: "center",
-            paddingHorizontal: 40,
-          }}
-        >
-          <View
-            style={{
-              width: "100%",
-              aspectRatio: 3 / 4,
-              borderRadius: 16,
-              borderWidth: 2,
-              borderColor: "rgba(255,255,255,0.7)",
-              borderStyle: "dashed",
-            }}
-          />
+        <View className="absolute inset-0 items-center justify-center px-10">
+          <View className="w-full aspect-[3/4] rounded-2xl border-2 border-white/70 border-dashed" />
         </View>
 
         <SafeAreaView
-          style={{
-            position: "absolute",
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0,
-          }}
+          className="absolute inset-0"
           edges={["top", "bottom"]}
         >
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-              paddingHorizontal: 20,
-              paddingTop: 12,
-            }}
-          >
+          <View className="flex-row items-center justify-between px-5 pt-3">
             <TouchableOpacity
               onPress={onClose}
-              style={{
-                width: 40,
-                height: 40,
-                borderRadius: 20,
-                backgroundColor: "rgba(0,0,0,0.4)",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
+              className="w-10 h-10 rounded-full bg-black/40 items-center justify-center"
             >
               <Feather name="x" size={18} color="#fff" />
             </TouchableOpacity>
 
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                gap: 6,
-                backgroundColor: "rgba(0,0,0,0.4)",
-                borderRadius: 999,
-                paddingHorizontal: 12,
-                paddingVertical: 6,
-              }}
-            >
+            <View className="flex-row items-center gap-1.5 bg-black/40 rounded-full px-3 py-1.5">
               <MaterialCommunityIcons
                 name="robot-outline"
                 size={12}
                 color={COLORS.teal}
               />
-              <Text
-                style={{
-                  color: "#FFFFFF",
-                  fontSize: 11,
-                  fontWeight: "500",
-                }}
-              >
+              <Text className="text-white text-[11px] font-medium">
                 Align the receipt
               </Text>
             </View>
 
-            <View style={{ width: 40, height: 40 }} />
+            <View className="w-10 h-10" />
           </View>
 
-          <View style={{ flex: 1 }} />
+          <View className="flex-1" />
 
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-              paddingHorizontal: 40,
-              paddingBottom: 24,
-            }}
-          >
+          <View className="flex-row items-center justify-between px-10 pb-6">
             <TouchableOpacity
               onPress={handlePickFromLibrary}
               disabled={capturing}
-              style={{
-                width: 48,
-                height: 48,
-                borderRadius: 24,
-                backgroundColor: "rgba(0,0,0,0.4)",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
+              className="w-12 h-12 rounded-full bg-black/40 items-center justify-center"
             >
               <Feather name="image" size={18} color="#fff" />
             </TouchableOpacity>
@@ -193,48 +116,23 @@ export function ReceiptScannerModal({
               onPress={handleCapture}
             />
 
-            <View style={{ width: 48, height: 48 }} />
+            <View className="w-12 h-12" />
           </View>
         </SafeAreaView>
 
         {!permission?.granted && permission?.canAskAgain === false && (
-          <View
-            style={{
-              position: "absolute",
-              top: 0,
-              right: 0,
-              bottom: 0,
-              left: 0,
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: "rgba(0,0,0,0.8)",
-              paddingHorizontal: 40,
-            }}
-          >
+          <View className="absolute inset-0 items-center justify-center bg-black/80 px-10">
             <Feather name="camera-off" size={32} color="#8A8D96" />
 
-            <Text
-              style={{
-                color: "rgba(255,255,255,0.7)",
-                fontSize: 14,
-                marginTop: 12,
-                textAlign: "center",
-              }}
-            >
+            <Text className="text-white/70 text-sm mt-3 text-center">
               Camera access is off. Enable it in Settings to scan receipts.
             </Text>
 
             <TouchableOpacity
               onPress={onClose}
-              style={{ marginTop: 24 }}
+              className="mt-6"
             >
-              <Text
-                style={{
-                  color: "#FFFFFF",
-                  fontSize: 14,
-                  fontWeight: "500",
-                }}
-              >
+              <Text className="text-white text-sm font-medium">
                 Close
               </Text>
             </TouchableOpacity>

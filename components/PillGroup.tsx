@@ -18,47 +18,31 @@ export function PillGroup<T extends string>({
   scrollable?: boolean;
 }) {
   const row = (
-    <View
-      style={{
-        flexDirection: "row",
-        gap: 8,
-      }}
-    >
-      {options.map((option) => (
-        <TouchableOpacity
-          key={option.key}
-          onPress={() => onChange(option.key)}
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            gap: 6,
-            paddingHorizontal: 12,
-            paddingVertical: 8,
-            borderRadius: 999,
-            borderWidth: 1,
-            backgroundColor:
-              value === option.key ? "#0B0E14" : "#FFFFFF",
-            borderColor:
-              value === option.key ? "#0B0E14" : "#E8E6DF",
-          }}
-        >
-          {option.icon && (
-            <Text style={{ fontSize: 12 }}>
-              {option.icon}
-            </Text>
-          )}
-
-          <Text
-            style={{
-              fontSize: 12,
-              color:
-                value === option.key ? "#FFFFFF" : "#8A8D96",
-            }}
+    <View className="flex-row gap-2">
+      {options.map((option) => {
+        const isSelected = value === option.key;
+        return (
+          <TouchableOpacity
+            key={option.key}
+            onPress={() => onChange(option.key)}
+            className={`flex-row items-center gap-1.5 px-3 py-2 rounded-full border ${
+              isSelected
+                ? "bg-[#0B0E14] border-[#0B0E14]"
+                : "bg-white border-[#E8E6DF]"
+            }`}
           >
-            {option.label}
-          </Text>
-        </TouchableOpacity>
-      ))}
+            {option.icon && <Text className="text-xs">{option.icon}</Text>}
+
+            <Text
+              className={`text-xs ${
+                isSelected ? "text-white" : "text-[#8A8D96]"
+              }`}
+            >
+              {option.label}
+            </Text>
+          </TouchableOpacity>
+        );
+      })}
     </View>
   );
 

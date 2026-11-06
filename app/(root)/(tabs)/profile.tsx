@@ -33,17 +33,7 @@ const ACCOUNT_ICON: Record<AccountType, keyof typeof Feather.glyphMap> = {
 
 function SectionLabel({ children }: { children: string }) {
   return (
-    <Text
-      style={{
-        color: "#5C5F68",
-        fontSize: 11,
-        textTransform: "uppercase",
-        letterSpacing: 0.5,
-        marginBottom: 8,
-        marginTop: 24,
-        marginHorizontal: 20,
-      }}
-    >
+    <Text className="text-[#5C5F68] text-[11px] uppercase tracking-wider mb-2 mt-6 mx-5">
       {children}
     </Text>
   );
@@ -68,48 +58,22 @@ function Row({
     <TouchableOpacity
       onPress={onPress}
       disabled={!onPress}
-      style={{
-        flexDirection: "row",
-        alignItems: "center",
-        backgroundColor: "#FFFFFF",
-        paddingHorizontal: 16,
-        paddingVertical: 14,
-        borderBottomWidth: 1,
-        borderBottomColor: "#F0EEE7",
-      }}
+      className="flex-row items-center bg-white px-4 py-3.5 border-b border-[#F0EEE7]"
     >
-      <View
-        style={{
-          width: 32,
-          height: 32,
-          borderRadius: 16,
-          backgroundColor: "#F5F4F0",
-          alignItems: "center",
-          justifyContent: "center",
-          marginRight: 12,
-        }}
-      >
+      <View className="w-8 h-8 rounded-full bg-[#F5F4F0] items-center justify-center mr-3">
         <Feather name={icon} size={15} color={danger ? "#FF6B4A" : "#5C5F68"} />
       </View>
 
       <Text
-        style={{
-          flex: 1,
-          fontSize: 14,
-          color: danger ? "#FF6B4A" : "#0B0E14",
-        }}
+        className={`flex-1 text-sm ${
+          danger ? "text-[#FF6B4A]" : "text-[#0B0E14]"
+        }`}
       >
         {label}
       </Text>
 
       {value && (
-        <Text
-          style={{
-            color: "#8A8D96",
-            fontSize: 12,
-            marginRight: 8,
-          }}
-        >
+        <Text className="text-[#8A8D96] text-xs mr-2">
           {value}
         </Text>
       )}
@@ -225,95 +189,50 @@ export default function ProfileScreen() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#F5F4F0" }} edges={["top"]}>
+    <SafeAreaView className="flex-1 bg-[#F5F4F0]" edges={["top"]}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 100 }}
       >
-        <View style={{ paddingHorizontal: 20, paddingTop: 12, paddingBottom: 8 }}>
-          <Text style={{ color: "#0B0E14", fontSize: 20, fontWeight: "600" }}>
+        <View className="px-5 pt-3 pb-2">
+          <Text className="text-[#0B0E14] text-xl font-semibold">
             Profile
           </Text>
         </View>
 
         {/* User card */}
-        <View
-          style={{
-            marginHorizontal: 20,
-            marginTop: 8,
-            backgroundColor: "#0B0E14",
-            borderRadius: 16,
-            paddingHorizontal: 20,
-            paddingVertical: 24,
-            alignItems: "center",
-          }}
-        >
+        <View className="mx-5 mt-2 bg-[#0B0E14] rounded-2xl px-5 py-6 items-center">
           <TouchableOpacity
             onPress={handlePickAvatar}
             disabled={uploadingAvatar}
             activeOpacity={0.8}
-            style={{
-              width: 80,
-              height: 80,
-              borderRadius: 40,
-              backgroundColor: "#1A1D26",
-              alignItems: "center",
-              justifyContent: "center",
-              overflow: "hidden",
-              borderWidth: 2,
-              borderColor: "#2A2E3A",
-            }}
+            className="w-20 h-20 rounded-full bg-[#1A1D26] items-center justify-center overflow-hidden border-2 border-[#2A2E3A]"
           >
             {uploadingAvatar ? (
               <ActivityIndicator color="#8A8D96" />
             ) : user?.imageUrl && user.hasImage ? (
               <Image
                 source={{ uri: user.imageUrl }}
-                style={{ width: 80, height: 80 }}
+                className="w-20 h-20"
                 contentFit="cover"
               />
             ) : (
               <Feather name="user" size={30} color="#8A8D96" />
             )}
 
-            <View
-              style={{
-                position: "absolute",
-                bottom: 0,
-                left: 0,
-                right: 0,
-                height: 24,
-                backgroundColor: "rgba(0,0,0,0.5)",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
+            <View className="absolute bottom-0 inset-x-0 h-6 bg-black/50 items-center justify-center">
               <Feather name="camera" size={13} color="#F2EFE9" />
             </View>
           </TouchableOpacity>
 
-          <Text
-            style={{
-              color: "#FFFFFF",
-              fontSize: 24,
-              fontWeight: "700",
-              marginTop: 14,
-            }}
-          >
+          <Text className="text-white text-2xl font-bold mt-3.5">
             {user?.firstName} {user?.lastName}
           </Text>
 
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              gap: 6,
-              marginTop: 4,
-            }}
-          >
+          <View className="flex-row items-center gap-1.5 mt-1">
             <Feather name="mail" size={11} color="#8A8D96" />
             <Text
-              style={{ color: "#8A8D96", fontSize: 12 }}
+              className="text-[#8A8D96] text-xs"
               numberOfLines={1}
             >
               {user?.emailAddresses?.[0]?.emailAddress}
@@ -323,36 +242,14 @@ export default function ProfileScreen() {
 
         {/* Accounts */}
         <SectionLabel>Accounts</SectionLabel>
-        <View
-          style={{
-            marginHorizontal: 20,
-            borderRadius: 16,
-            overflow: "hidden",
-            borderWidth: 1,
-            borderColor: "#E8E6DF",
-          }}
-        >
+        <View className="mx-5 rounded-2xl overflow-hidden border border-[#E8E6DF]">
           {loadingAccounts ? (
-            <View
-              style={{
-                backgroundColor: "#FFFFFF",
-                paddingHorizontal: 16,
-                paddingVertical: 20,
-                alignItems: "center",
-              }}
-            >
+            <View className="bg-white px-4 py-5 items-center">
               <ActivityIndicator color="#5C5F68" />
             </View>
           ) : accountsError ? (
-            <View
-              style={{
-                backgroundColor: "#FFFFFF",
-                paddingHorizontal: 16,
-                paddingVertical: 20,
-                alignItems: "center",
-              }}
-            >
-              <Text style={{ color: "#5C5F68", fontSize: 12 }}>
+            <View className="bg-white px-4 py-5 items-center">
+              <Text className="text-[#5C5F68] text-xs">
                 Couldn&apos;t load your accounts.
               </Text>
             </View>
@@ -383,15 +280,7 @@ export default function ProfileScreen() {
 
         {/* Preferences */}
         <SectionLabel>Preferences</SectionLabel>
-        <View
-          style={{
-            marginHorizontal: 20,
-            borderRadius: 16,
-            overflow: "hidden",
-            borderWidth: 1,
-            borderColor: "#E8E6DF",
-          }}
-        >
+        <View className="mx-5 rounded-2xl overflow-hidden border border-[#E8E6DF]">
           <Row
             icon="dollar-sign"
             label="Currency"
@@ -399,30 +288,12 @@ export default function ProfileScreen() {
             onPress={() => setCurrencyPickerOpen(true)}
           />
 
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              backgroundColor: "#FFFFFF",
-              paddingHorizontal: 16,
-              paddingVertical: 14,
-            }}
-          >
-            <View
-              style={{
-                width: 32,
-                height: 32,
-                borderRadius: 16,
-                backgroundColor: "#F5F4F0",
-                alignItems: "center",
-                justifyContent: "center",
-                marginRight: 12,
-              }}
-            >
+          <View className="flex-row items-center bg-white px-4 py-3.5">
+            <View className="w-8 h-8 rounded-full bg-[#F5F4F0] items-center justify-center mr-3">
               <Feather name="lock" size={15} color="#5C5F68" />
             </View>
 
-            <Text style={{ flex: 1, fontSize: 14, color: "#0B0E14" }}>
+            <Text className="flex-1 text-sm text-[#0B0E14]">
               Biometric lock
             </Text>
 
@@ -432,15 +303,7 @@ export default function ProfileScreen() {
 
         {/* Account actions */}
         <SectionLabel>Account</SectionLabel>
-        <View
-          style={{
-            marginHorizontal: 20,
-            borderRadius: 16,
-            overflow: "hidden",
-            borderWidth: 1,
-            borderColor: "#E8E6DF",
-          }}
-        >
+        <View className="mx-5 rounded-2xl overflow-hidden border border-[#E8E6DF]">
           <Row
             icon="log-out"
             label="Sign out"

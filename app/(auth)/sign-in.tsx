@@ -92,38 +92,16 @@ export default function SignIn() {
     return (
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{
-          flex: 1,
-          backgroundColor: "#F5F5F0",
-        }}
+        className="flex-1 bg-[#F5F5F0]"
       >
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            paddingHorizontal: 24,
-            marginTop: -64,
-          }}
-        >
+        <View className="flex-1 justify-center px-6 -mt-16">
           <Image
             source={require("../../assets/images/budgetco.png")}
-            style={{
-              width: 144,
-              height: 64,
-              marginBottom: 32,
-            }}
+            className="w-36 h-16 mb-8"
             resizeMode="contain"
           />
 
-          <Text
-            style={{
-              fontSize: 30,
-              fontWeight: "700",
-              color: "#1A1D26",
-              marginBottom: 8,
-              lineHeight: 36,
-            }}
-          >
+          <Text className="text-3xl font-bold text-[#1A1D26] mb-2 leading-9">
             Verify your account
           </Text>
 
@@ -133,16 +111,7 @@ export default function SignIn() {
             render={({ field: { value, onChange } }) => {
               return (
                 <TextInput
-                  style={{
-                    borderWidth: 1,
-                    borderColor: "#E8E6DF",
-                    backgroundColor: "white",
-                    borderRadius: 12,
-                    paddingHorizontal: 16,
-                    paddingVertical: 12,
-                    marginBottom: 8,
-                    color: "#1A1D26",
-                  }}
+                  className="border border-[#E8E6DF] bg-white rounded-xl px-4 py-3 mb-2 text-[#1A1D26]"
                   placeholder="Enter verification code"
                   placeholderTextColor="#8A8D96"
                   value={value}
@@ -153,25 +122,13 @@ export default function SignIn() {
           />
 
           {codeErrors.code && (
-            <Text
-              style={{
-                color: "#FF6B6B",
-                marginBottom: 16,
-                fontSize: 14,
-              }}
-            >
+            <Text className="text-[#FF6B6B] mb-4 text-sm">
               {codeErrors.code.message}
             </Text>
           )}
 
           {errors.fields.code && (
-            <Text
-              style={{
-                color: "#FF6B6B",
-                marginBottom: 16,
-                fontSize: 14,
-              }}
-            >
+            <Text className="text-[#FF6B6B] mb-4 text-sm">
               {errors.fields.code.message}
             </Text>
           )}
@@ -179,25 +136,12 @@ export default function SignIn() {
           <TouchableOpacity
             onPress={handleCodeSubmit(onVerifyPress)}
             disabled={isLoading}
-            style={{
-              width: "100%",
-              backgroundColor: "#3B82F6",
-              paddingVertical: 16,
-              borderRadius: 12,
-              alignItems: "center",
-              marginBottom: 16,
-            }}
+            className="w-full bg-[#3B82F6] py-4 rounded-xl items-center mb-4"
           >
             {isLoading ? (
               <ActivityIndicator color="white" />
             ) : (
-              <Text
-                style={{
-                  color: "white",
-                  fontWeight: "600",
-                  fontSize: 16,
-                }}
-              >
+              <Text className="text-white font-semibold text-base">
                 Verify
               </Text>
             )}
@@ -205,32 +149,18 @@ export default function SignIn() {
 
           <TouchableOpacity
             onPress={() => signIn.mfa.sendEmailCode()}
-            style={{
-              paddingVertical: 8,
-            }}
+            className="py-2"
           >
-            <Text
-              style={{
-                color: "#3B82F6",
-                fontSize: 14,
-              }}
-            >
+            <Text className="text-[#3B82F6] text-sm">
               I need a new code
             </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             onPress={() => signIn.reset()}
-            style={{
-              paddingVertical: 8,
-            }}
+            className="py-2"
           >
-            <Text
-              style={{
-                color: "#3B82F6",
-                fontSize: 14,
-              }}
-            >
+            <Text className="text-[#3B82F6] text-sm">
               Start over
             </Text>
           </TouchableOpacity>
@@ -242,49 +172,20 @@ export default function SignIn() {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={{
-        flex: 1,
-        backgroundColor: "#F5F5F0",
-      }}
+      className="flex-1 bg-[#F5F5F0]"
     >
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          paddingHorizontal: 24,
-          marginTop: -64,
-        }}
-      >
+      <View className="flex-1 justify-center px-6 -mt-16">
         <Image
           source={require("../../assets/images/budgetco.png")}
-          style={{
-            width: 200,
-            height: 150,
-            marginBottom: 32,
-            alignSelf: "center",
-          }}
+          className="w-[200px] h-[150px] mb-8 self-center"
           resizeMode="contain"
         />
 
-        <Text
-          style={{
-            fontSize: 30,
-            fontWeight: "700",
-            color: "#1A1D26",
-            marginBottom: 8,
-            lineHeight: 36,
-          }}
-        >
+        <Text className="text-3xl font-bold text-[#1A1D26] mb-2 leading-9">
           Welcome back
         </Text>
 
-        <Text
-          style={{
-            color: "#6B7280",
-            fontSize: 16,
-            marginBottom: 32,
-          }}
-        >
+        <Text className="text-[#6B7280] text-base mb-8">
           Sign in to your account
         </Text>
 
@@ -294,16 +195,7 @@ export default function SignIn() {
           render={({ field: { value, onChange } }) => {
             return (
               <TextInput
-                style={{
-                  borderWidth: 1,
-                  borderColor: "#E8E6DF",
-                  backgroundColor: "white",
-                  borderRadius: 12,
-                  paddingHorizontal: 16,
-                  paddingVertical: 12,
-                  marginBottom: 8,
-                  color: "#1A1D26",
-                }}
+                className="border border-[#E8E6DF] bg-white rounded-xl px-4 py-3 mb-2 text-[#1A1D26]"
                 placeholder="Email Address"
                 placeholderTextColor="#8A8D96"
                 value={value}
@@ -315,25 +207,13 @@ export default function SignIn() {
         />
 
         {formErrors.email && (
-          <Text
-            style={{
-              color: "#FF6B6B",
-              marginBottom: 16,
-              fontSize: 14,
-            }}
-          >
+          <Text className="text-[#FF6B6B] mb-4 text-sm">
             {formErrors.email.message}
           </Text>
         )}
 
         {errors.fields.identifier && (
-          <Text
-            style={{
-              color: "#FF6B6B",
-              marginBottom: 16,
-              fontSize: 14,
-            }}
-          >
+          <Text className="text-[#FF6B6B] mb-4 text-sm">
             {errors.fields.identifier.message}
           </Text>
         )}
@@ -344,16 +224,7 @@ export default function SignIn() {
           render={({ field: { value, onChange } }) => {
             return (
               <TextInput
-                style={{
-                  borderWidth: 1,
-                  borderColor: "#E8E6DF",
-                  backgroundColor: "white",
-                  borderRadius: 12,
-                  paddingHorizontal: 16,
-                  paddingVertical: 12,
-                  marginBottom: 8,
-                  color: "#1A1D26",
-                }}
+                className="border border-[#E8E6DF] bg-white rounded-xl px-4 py-3 mb-2 text-[#1A1D26]"
                 placeholder="Password"
                 placeholderTextColor="#8A8D96"
                 value={value}
@@ -365,25 +236,13 @@ export default function SignIn() {
         />
 
         {formErrors.password && (
-          <Text
-            style={{
-              color: "#FF6B6B",
-              marginBottom: 16,
-              fontSize: 14,
-            }}
-          >
+          <Text className="text-[#FF6B6B] mb-4 text-sm">
             {formErrors.password.message}
           </Text>
         )}
 
         {errors.fields.password && (
-          <Text
-            style={{
-              color: "#FF6B6B",
-              marginBottom: 16,
-              fontSize: 14,
-            }}
-          >
+          <Text className="text-[#FF6B6B] mb-4 text-sm">
             {errors.fields.password.message}
           </Text>
         )}
@@ -391,51 +250,24 @@ export default function SignIn() {
         <TouchableOpacity
           onPress={handleSubmit(onSignInPress)}
           disabled={isLoading}
-          style={{
-            width: "100%",
-            backgroundColor: "#3B82F6",
-            paddingVertical: 16,
-            borderRadius: 12,
-            alignItems: "center",
-            marginBottom: 16,
-          }}
+          className="w-full bg-[#3B82F6] py-4 rounded-xl items-center mb-4"
         >
           {isLoading ? (
             <ActivityIndicator color="white" />
           ) : (
-            <Text
-              style={{
-                color: "white",
-                fontWeight: "600",
-                fontSize: 16,
-              }}
-            >
+            <Text className="text-white font-semibold text-base">
               Sign In
             </Text>
           )}
         </TouchableOpacity>
 
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-          }}
-        >
-          <Text
-            style={{
-              color: "#6B7280",
-            }}
-          >
+        <View className="flex-row justify-center">
+          <Text className="text-[#6B7280]">
             Dont have an account?{" "}
           </Text>
 
           <Link href="/sign-up">
-            <Text
-              style={{
-                color: "#3B82F6",
-                fontWeight: "600",
-              }}
-            >
+            <Text className="text-[#3B82F6] font-semibold">
               Sign Up
             </Text>
           </Link>

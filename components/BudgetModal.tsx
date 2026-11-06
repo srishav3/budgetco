@@ -56,14 +56,7 @@ export function BudgetModal({
       title={budget ? "Edit monthly budget" : "Set monthly budget"}
       onClose={onClose}
     >
-      <Text
-        style={{
-          color: "#1A1D26",
-          fontSize: 12,
-          fontWeight: "500",
-          marginBottom: 6,
-        }}
-      >
+      <Text className="text-[#1A1D26] text-xs font-medium mb-1.5">
         Monthly budget
       </Text>
 
@@ -77,27 +70,11 @@ export function BudgetModal({
         placeholderTextColor={COLORS.placeholder}
         keyboardType="numeric"
         autoFocus
-        style={{
-          backgroundColor: "#FFFFFF",
-          borderWidth: 1,
-          borderColor: "#E8E6DF",
-          borderRadius: 12,
-          paddingHorizontal: 16,
-          paddingVertical: 14,
-          marginBottom: 20,
-          fontSize: 14,
-          color: "#1A1D26",
-        }}
+        className="bg-white border border-[#E8E6DF] rounded-xl px-4 py-3.5 mb-5 text-sm text-[#1A1D26]"
       />
 
       {error ? (
-        <Text
-          style={{
-            color: "#FF6B4A",
-            fontSize: 12,
-            marginBottom: 12,
-          }}
-        >
+        <Text className="text-[#FF6B4A] text-xs mb-3">
           {error}
         </Text>
       ) : null}
@@ -105,23 +82,12 @@ export function BudgetModal({
       <TouchableOpacity
         onPress={handleSave}
         disabled={saving}
-        style={{
-          backgroundColor: "#1A1D26",
-          borderRadius: 12,
-          paddingVertical: 16,
-          alignItems: "center",
-          marginBottom: 12,
-          opacity: saving ? 0.7 : 1,
-        }}
+        className={`bg-[#1A1D26] rounded-xl py-4 items-center mb-3 ${
+          saving ? "opacity-70" : "opacity-100"
+        }`}
         activeOpacity={0.85}
       >
-        <Text
-          style={{
-            color: "#FFFFFF",
-            fontSize: 14,
-            fontWeight: "600",
-          }}
-        >
+        <Text className="text-white text-sm font-semibold">
           {saving ? "Saving…" : "Save budget"}
         </Text>
       </TouchableOpacity>

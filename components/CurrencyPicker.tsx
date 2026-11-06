@@ -59,40 +59,18 @@ export function CurrencyPicker({
       presentationStyle="pageSheet"
     >
       <SafeAreaView
-        style={{
-          flex: 1,
-          backgroundColor: "#F8F7F2",
-        }}
+        className="flex-1 bg-[#F8F7F2]"
         edges={["top"]}
       >
         {/* Search bar and Cancel button */}
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            paddingHorizontal: 20,
-            paddingTop: 12,
-            paddingBottom: 8,
-            gap: 12,
-          }}
-        >
+        <View className="flex-row items-center px-5 pt-3 pb-2 gap-3">
           <TextInput
             value={search}
             onChangeText={setSearch}
             placeholder="Search currency…"
             placeholderTextColor="#8A8D96"
             autoFocus
-            style={{
-              flex: 1,
-              backgroundColor: "#FFFFFF",
-              borderWidth: 1,
-              borderColor: "#E8E6DF",
-              borderRadius: 999,
-              paddingHorizontal: 16,
-              paddingVertical: 10,
-              fontSize: 14,
-              color: "#1A1D26",
-            }}
+            className="flex-1 bg-white border border-[#E8E6DF] rounded-full px-4 py-2.5 text-sm text-[#1A1D26]"
           />
 
           <TouchableOpacity
@@ -101,12 +79,7 @@ export function CurrencyPicker({
               onClose();
             }}
           >
-            <Text
-              style={{
-                color: "#6B6E77",
-                fontSize: 14,
-              }}
-            >
+            <Text className="text-[#6B6E77] text-sm">
               Cancel
             </Text>
           </TouchableOpacity>
@@ -123,45 +96,21 @@ export function CurrencyPicker({
                 onSelect(item);
                 setSearch("");
               }}
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                paddingHorizontal: 20,
-                paddingVertical: 14,
-                borderBottomWidth: 1,
-                borderBottomColor: "#F0EDE6",
-              }}
+              className="flex-row items-center px-5 py-3.5 border-b border-[#F0EDE6]"
             >
               {/* Currency symbol */}
-              <Text
-                style={{
-                  color: "#6B6E77",
-                  width: 32,
-                  fontSize: 14,
-                }}
-              >
+              <Text className="text-[#6B6E77] w-8 text-sm">
                 {item.symbol}
               </Text>
 
               {/* Currency code */}
-              <Text
-                style={{
-                  color: "#1A1D26",
-                  fontSize: 14,
-                  fontWeight: "500",
-                  width: 48,
-                }}
-              >
+              <Text className="text-[#1A1D26] text-sm font-medium w-12">
                 {item.code}
               </Text>
 
               {/* Currency name */}
               <Text
-                style={{
-                  color: "#6B6E77",
-                  fontSize: 14,
-                  flex: 1,
-                }}
+                className="text-[#6B6E77] text-sm flex-1"
                 numberOfLines={1}
               >
                 {item.name}

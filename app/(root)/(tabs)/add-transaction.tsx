@@ -195,32 +195,32 @@ export default function AddTransactionScreen() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#F5F4F0" }} edges={["top"]}>
-      <View style={{ paddingHorizontal: 20, paddingTop: 12, paddingBottom: 8 }}>
-        <Text style={{ color: "#0B0E14", fontSize: 20, fontWeight: "600" }}>
+    <SafeAreaView className="flex-1 bg-[#F5F4F0]" edges={["top"]}>
+      <View className="px-5 pt-3 pb-2">
+        <Text className="text-[#0B0E14] text-xl font-semibold">
           Add transaction
         </Text>
       </View>
 
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{ flex: 1 }}
+        className="flex-1"
       >
         {loadingAccounts ? (
-          <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+          <View className="flex-1 items-center justify-center">
             <ActivityIndicator color="#4A9EFF" />
           </View>
         ) : accountsError ? (
-          <View style={{ flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 40 }}>
+          <View className="flex-1 items-center justify-center px-10">
             <Feather name="alert-circle" size={32} color="#FF6B4A" />
-            <Text style={{ color: "#5C5F68", fontSize: 14, marginTop: 12, textAlign: "center" }}>
+            <Text className="text-[#5C5F68] text-sm mt-3 text-center">
               Couldn&apos;t load your accounts.
             </Text>
           </View>
         ) : accounts.length === 0 ? (
-          <View style={{ flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 40 }}>
+          <View className="flex-1 items-center justify-center px-10">
             <Feather name="alert-circle" size={32} color="#FF6B4A" />
-            <Text style={{ color: "#5C5F68", fontSize: 14, marginTop: 12, textAlign: "center" }}>
+            <Text className="text-[#5C5F68] text-sm mt-3 text-center">
               You need an account before adding a transaction.
             </Text>
           </View>
@@ -233,7 +233,7 @@ export default function AddTransactionScreen() {
             }}
           >
             {/* AI capture shortcuts */}
-            <View style={{ flexDirection: "row", gap: 10, marginBottom: 16 }}>
+            <View className="flex-row gap-2.5 mb-4">
               <AIActionCard
                 icon="camera"
                 title="Scan receipt"
@@ -251,7 +251,7 @@ export default function AddTransactionScreen() {
             </View>
 
             {/* Type toggle */}
-            <View style={{ flexDirection: "row", backgroundColor: "#FFFFFF", borderRadius: 12, borderWidth: 1, borderColor: "#E8E6DF", padding: 4, marginBottom: 16 }}>
+            <View className="flex-row bg-white rounded-xl border border-[#E8E6DF] p-1 mb-4">
               {TYPE_OPTIONS.map((t) => (
                 <TouchableOpacity
                   key={t.key}
@@ -264,20 +264,14 @@ export default function AddTransactionScreen() {
                         : EXPENSE_CATEGORIES[0].key
                     );
                   }}
-                  style={{
-                    flex: 1,
-                    paddingVertical: 8,
-                    borderRadius: 8,
-                    alignItems: "center",
-                    backgroundColor: type === t.key ? "#0B0E14" : "transparent",
-                  }}
+                  className={`flex-1 py-2 rounded-lg items-center ${
+                    type === t.key ? "bg-[#0B0E14]" : "bg-transparent"
+                  }`}
                 >
                   <Text
-                    style={{
-                      fontSize: 12,
-                      fontWeight: "500",
-                      color: type === t.key ? "#FFFFFF" : "#8A8D96",
-                    }}
+                    className={`text-xs font-medium ${
+                      type === t.key ? "text-white" : "text-[#8A8D96]"
+                    }`}
                   >
                     {t.label}
                   </Text>
@@ -286,7 +280,7 @@ export default function AddTransactionScreen() {
             </View>
 
             {/* Amount */}
-            <Text style={{ color: "#0B0E14", fontSize: 12, fontWeight: "500", marginBottom: 6 }}>
+            <Text className="text-[#0B0E14] text-xs font-medium mb-1.5">
               Amount
             </Text>
             <Controller
@@ -303,22 +297,22 @@ export default function AddTransactionScreen() {
                   placeholder="0"
                   placeholderTextColor="#8A8D96"
                   keyboardType="numeric"
-                  style={{ backgroundColor: "#FFFFFF", borderWidth: 1, borderColor: "#E8E6DF", borderRadius: 12, paddingHorizontal: 16, paddingVertical: 14, fontSize: 14, color: "#0B0E14" }}
+                  className="bg-white border border-[#E8E6DF] rounded-xl px-4 py-3.5 text-sm text-[#0B0E14]"
                 />
               )}
             />
             {errors.amount && (
-              <Text style={{ color: "#FF6B4A", fontSize: 12, marginTop: 6 }}>
+              <Text className="text-[#FF6B4A] text-xs mt-1.5">
                 {errors.amount.message}
               </Text>
             )}
-            <View style={{ marginBottom: 16 }} />
+            <View className="mb-4" />
 
             {/* Category */}
-            <Text style={{ color: "#0B0E14", fontSize: 12, fontWeight: "500", marginBottom: 6 }}>
+            <Text className="text-[#0B0E14] text-xs font-medium mb-1.5">
               Category
             </Text>
-            <View style={{ marginBottom: 16 }}>
+            <View className="mb-4">
               <PillGroup
                 options={categories.map((c) => ({
                   key: c.key,
@@ -331,10 +325,10 @@ export default function AddTransactionScreen() {
             </View>
 
             {/* Account */}
-            <Text style={{ color: "#0B0E14", fontSize: 12, fontWeight: "500", marginBottom: 6 }}>
+            <Text className="text-[#0B0E14] text-xs font-medium mb-1.5">
               Account
             </Text>
-            <View style={{ marginBottom: 4 }}>
+            <View className="mb-1">
               <PillGroup
                 options={accounts.map((a) => ({ key: a.id, label: a.name }))}
                 value={accountId}
@@ -342,28 +336,28 @@ export default function AddTransactionScreen() {
               />
             </View>
             {errors.accountId && (
-              <Text style={{ color: "#FF6B4A", fontSize: 12, marginBottom: 12 }}>
+              <Text className="text-[#FF6B4A] text-xs mb-3">
                 {errors.accountId.message}
               </Text>
             )}
-            <View style={{ marginBottom: 12 }} />
+            <View className="mb-3" />
 
             {/* Date */}
-            <Text style={{ color: "#0B0E14", fontSize: 12, fontWeight: "500", marginBottom: 6 }}>
+            <Text className="text-[#0B0E14] text-xs font-medium mb-1.5">
               Date
             </Text>
             <TouchableOpacity
               onPress={() => setDatePickerOpen((v) => !v)}
-              style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", backgroundColor: "#FFFFFF", borderWidth: 1, borderColor: "#E8E6DF", borderRadius: 12, paddingHorizontal: 16, paddingVertical: 14, marginBottom: 4 }}
+              className="flex-row items-center justify-between bg-white border border-[#E8E6DF] rounded-xl px-4 py-3.5 mb-1"
             >
-              <Text style={{ fontSize: 14, color: "#0B0E14" }}>
+              <Text className="text-sm text-[#0B0E14]">
                 {format(date, "d MMM yyyy")}
               </Text>
               <Feather name="calendar" size={16} color="#5C5F68" />
             </TouchableOpacity>
 
             {datePickerOpen && (
-              <View style={{ backgroundColor: "#FFFFFF", borderWidth: 1, borderColor: "#E8E6DF", borderRadius: 12, marginBottom: 16, overflow: "hidden" }}>
+              <View className="bg-white border border-[#E8E6DF] rounded-xl mb-4 overflow-hidden">
                 <CalendarPicker
                   value={date}
                   maximumDate={new Date()}
@@ -374,10 +368,10 @@ export default function AddTransactionScreen() {
                 />
               </View>
             )}
-            {!datePickerOpen && <View style={{ marginBottom: 16 }} />}
+            {!datePickerOpen && <View className="mb-4" />}
 
             {/* Description */}
-            <Text style={{ color: "#0B0E14", fontSize: 12, fontWeight: "500", marginBottom: 6 }}>
+            <Text className="text-[#0B0E14] text-xs font-medium mb-1.5">
               Description (optional)
             </Text>
             <Controller
@@ -390,22 +384,22 @@ export default function AddTransactionScreen() {
                   onBlur={onBlur}
                   placeholder="e.g. Swiggy order"
                   placeholderTextColor="#8A8D96"
-                  style={{ backgroundColor: "#FFFFFF", borderWidth: 1, borderColor: "#E8E6DF", borderRadius: 12, paddingHorizontal: 16, paddingVertical: 14, marginBottom: 16, fontSize: 14, color: "#0B0E14" }}
+                  className="bg-white border border-[#E8E6DF] rounded-xl px-4 py-3.5 mb-4 text-sm text-[#0B0E14]"
                 />
               )}
             />
 
             {error ? (
-              <Text style={{ color: "#FF6B4A", fontSize: 12, marginBottom: 16 }}>{error}</Text>
+              <Text className="text-[#FF6B4A] text-xs mb-4">{error}</Text>
             ) : null}
 
             <TouchableOpacity
               onPress={handleSubmit(onSubmit)}
               disabled={saving}
-              style={{ backgroundColor: "#0B0E14", borderRadius: 12, paddingVertical: 16, alignItems: "center", marginBottom: 8 }}
+              className="bg-[#0B0E14] rounded-xl py-4 items-center mb-2"
               activeOpacity={0.85}
             >
-              <Text style={{ color: "#FFFFFF", fontSize: 14, fontWeight: "600" }}>
+              <Text className="text-white text-sm font-semibold">
                 {saving ? "Saving…" : "Save transaction"}
               </Text>
             </TouchableOpacity>
@@ -414,10 +408,10 @@ export default function AddTransactionScreen() {
       </KeyboardAvoidingView>
 
       {scanning && (
-        <View style={{ position: "absolute", top: 0, right: 0, bottom: 0, left: 0, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(0, 0, 0, 0.4)" }}>
-          <View style={{ backgroundColor: "#FFFFFF", borderRadius: 16, paddingHorizontal: 24, paddingVertical: 20, alignItems: "center" }}>
+        <View className="absolute inset-0 items-center justify-center bg-black/40">
+          <View className="bg-white rounded-2xl px-6 py-5 items-center">
             <ActivityIndicator color="#4A9EFF" />
-            <Text style={{ color: "#0B0E14", fontSize: 14, marginTop: 12 }}>Reading receipt…</Text>
+            <Text className="text-[#0B0E14] text-sm mt-3">Reading receipt…</Text>
           </View>
         </View>
       )}

@@ -31,12 +31,11 @@ export function GradientIconButton({
         colors={colors}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
+        className="items-center justify-center"
         style={{
           width: size,
           height: size,
           borderRadius: size / 2,
-          alignItems: "center",
-          justifyContent: "center",
           ...(borderColor
             ? { borderWidth: 3, borderColor }
             : null),

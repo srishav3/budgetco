@@ -112,14 +112,7 @@ export function AccountModal({
       title={isEditing ? "Edit account" : "Add account"}
       onClose={onClose}
     >
-      <Text
-        style={{
-          color: "#0B0E14",
-          fontSize: 12,
-          fontWeight: "500",
-          marginBottom: 6,
-        }}
-      >
+      <Text className="text-[#0B0E14] text-xs font-medium mb-1.5">
         Name
       </Text>
 
@@ -128,57 +121,26 @@ export function AccountModal({
         onChangeText={setName}
         placeholder="e.g. HDFC Savings"
         placeholderTextColor={COLORS.placeholder}
-        style={{
-          backgroundColor: "#FFFFFF",
-          borderWidth: 1,
-          borderColor: "#E8E6DF",
-          borderRadius: 12,
-          paddingHorizontal: 16,
-          paddingVertical: 14,
-          fontSize: 14,
-          color: "#0B0E14",
-          marginBottom: 20,
-        }}
+        className="bg-white border border-[#E8E6DF] rounded-xl px-4 py-3.5 text-sm text-[#0B0E14] mb-5"
       />
 
-      <Text
-        style={{
-          color: "#0B0E14",
-          fontSize: 12,
-          fontWeight: "500",
-          marginBottom: 6,
-        }}
-      >
+      <Text className="text-[#0B0E14] text-xs font-medium mb-1.5">
         Type
       </Text>
 
-      <View
-        style={{
-          flexDirection: "row",
-          flexWrap: "wrap",
-          gap: 8,
-          marginBottom: 20,
-        }}
-      >
+      <View className="flex-row flex-wrap gap-2 mb-5">
         {ACCOUNT_TYPES.map((t) => (
           <TouchableOpacity
             key={t}
             onPress={() => setType(t)}
-            style={{
-              paddingHorizontal: 14,
-              paddingVertical: 8,
-              borderRadius: 999,
-              borderWidth: 1,
-              backgroundColor: type === t ? "#0B0E14" : "#FFFFFF",
-              borderColor: type === t ? "#0B0E14" : "#E8E6DF",
-            }}
+            className={`px-3.5 py-2 rounded-full border ${
+              type === t ? "bg-[#0B0E14] border-[#0B0E14]" : "bg-white border-[#E8E6DF]"
+            }`}
           >
             <Text
-              style={{
-                fontSize: 12,
-                fontWeight: "500",
-                color: type === t ? "#FFFFFF" : "#0B0E14",
-              }}
+              className={`text-xs font-medium ${
+                type === t ? "text-white" : "text-[#0B0E14]"
+              }`}
             >
               {ACCOUNT_TYPE_LABEL[t]}
             </Text>
@@ -187,13 +149,7 @@ export function AccountModal({
       </View>
 
       {error ? (
-        <Text
-          style={{
-            color: "#FF6B4A",
-            fontSize: 12,
-            marginBottom: 12,
-          }}
-        >
+        <Text className="text-[#FF6B4A] text-xs mb-3">
           {error}
         </Text>
       ) : null}
@@ -201,22 +157,10 @@ export function AccountModal({
       <TouchableOpacity
         onPress={handleSave}
         disabled={saving}
-        style={{
-          backgroundColor: "#0B0E14",
-          borderRadius: 12,
-          paddingVertical: 16,
-          alignItems: "center",
-          marginBottom: 12,
-        }}
+        className="bg-[#0B0E14] rounded-xl py-4 items-center mb-3"
         activeOpacity={0.85}
       >
-        <Text
-          style={{
-            color: "#FFFFFF",
-            fontSize: 14,
-            fontWeight: "600",
-          }}
-        >
+        <Text className="text-white text-sm font-semibold">
           {saving ? "Saving…" : isEditing ? "Save changes" : "Add account"}
         </Text>
       </TouchableOpacity>
@@ -224,18 +168,9 @@ export function AccountModal({
       {isEditing && !account.is_default && (
         <TouchableOpacity
           onPress={onMadeDefault}
-          style={{
-            paddingVertical: 12,
-            alignItems: "center",
-          }}
+          className="py-3 items-center"
         >
-          <Text
-            style={{
-              color: "#1A85FF",
-              fontSize: 14,
-              fontWeight: "500",
-            }}
-          >
+          <Text className="text-[#1A85FF] text-sm font-medium">
             Make default
           </Text>
         </TouchableOpacity>
@@ -244,18 +179,9 @@ export function AccountModal({
       {isEditing && (
         <TouchableOpacity
           onPress={handleDelete}
-          style={{
-            paddingVertical: 12,
-            alignItems: "center",
-          }}
+          className="py-3 items-center"
         >
-          <Text
-            style={{
-              color: "#FF6B4A",
-              fontSize: 14,
-              fontWeight: "500",
-            }}
-          >
+          <Text className="text-[#FF6B4A] text-sm font-medium">
             Delete account
           </Text>
         </TouchableOpacity>

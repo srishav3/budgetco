@@ -14,7 +14,7 @@ if (!publishableKey) {
 
 export default function RootLayout() {
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView className="flex-1">
       <QueryClientProvider client={queryClient}>
         <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
           <Slot />

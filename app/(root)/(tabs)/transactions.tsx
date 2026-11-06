@@ -197,66 +197,23 @@ export default function TransactionsScreen() {
     );
   };
 
-  const getChipStyle = (selected: boolean) => ({
-    paddingHorizontal: 14,
-    paddingVertical: 6,
-    borderRadius: 999,
-    borderWidth: 1,
-    borderColor: selected ? COLORS.background : COLORS.border,
-    backgroundColor: selected ? COLORS.background : COLORS.white,
-  });
-
-  const getChipTextStyle = (selected: boolean) => ({
-    color: selected ? COLORS.white : COLORS.secondaryText,
-    fontSize: 12,
-  });
-
   return (
     <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: COLORS.body,
-      }}
+      className="flex-1 bg-[#F8F7F2]"
       edges={["top"]}
     >
-      <View
-        style={{
-          paddingHorizontal: 20,
-          paddingTop: 12,
-          paddingBottom: 8,
-        }}
-      >
+      <View className="px-5 pt-3 pb-2">
         {/* Header */}
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            marginBottom: 12,
-          }}
-        >
-          <Text
-            style={{
-              color: COLORS.background,
-              fontSize: 20,
-              fontWeight: "600",
-            }}
-          >
+        <View className="flex-row items-center justify-between mb-3">
+          <Text className="text-[#1A1D26] text-xl font-semibold">
             Transactions
           </Text>
 
           <TouchableOpacity
             onPress={handleExport}
             disabled={exporting}
+            className="w-9 h-9 rounded-full bg-white border border-[#E8E6DF] items-center justify-center"
             style={{
-              width: 36,
-              height: 36,
-              borderRadius: 18,
-              backgroundColor: COLORS.white,
-              borderWidth: 1,
-              borderColor: COLORS.border,
-              alignItems: "center",
-              justifyContent: "center",
               opacity: exporting ? 0.7 : 1,
             }}
           >
@@ -276,20 +233,7 @@ export default function TransactionsScreen() {
         </View>
 
         {/* Search */}
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            gap: 8,
-            backgroundColor: COLORS.white,
-            borderRadius: 12,
-            borderWidth: 1,
-            borderColor: COLORS.border,
-            paddingHorizontal: 14,
-            paddingVertical: 10,
-            marginBottom: 10,
-          }}
-        >
+        <View className="flex-row items-center gap-2 bg-white rounded-xl border border-[#E8E6DF] px-3.5 py-2.5 mb-2.5">
           <Feather
             name="search"
             size={15}
@@ -301,12 +245,7 @@ export default function TransactionsScreen() {
             onChangeText={setSearch}
             placeholder="Search transactions"
             placeholderTextColor={COLORS.mutedText}
-            style={{
-              flex: 1,
-              fontSize: 12,
-              color: COLORS.background,
-              paddingVertical: 0,
-            }}
+            className="flex-1 text-xs text-[#1A1D26] py-0"
           />
 
           {search.length > 0 && (
@@ -321,13 +260,7 @@ export default function TransactionsScreen() {
         </View>
 
         {/* Transaction type filters */}
-        <View
-          style={{
-            flexDirection: "row",
-            gap: 8,
-            marginBottom: 10,
-          }}
-        >
+        <View className="flex-row gap-2 mb-2.5">
           {FILTERS.map((filter) => {
             const selected = activeFilter === filter;
 
@@ -335,9 +268,17 @@ export default function TransactionsScreen() {
               <TouchableOpacity
                 key={filter}
                 onPress={() => setActiveFilter(filter)}
-                style={getChipStyle(selected)}
+                className={`px-3.5 py-1.5 rounded-full border ${
+                  selected
+                    ? "bg-[#1A1D26] border-[#1A1D26]"
+                    : "bg-white border-[#E8E6DF]"
+                }`}
               >
-                <Text style={getChipTextStyle(selected)}>
+                <Text
+                  className={`text-xs ${
+                    selected ? "text-white" : "text-[#6B6E77]"
+                  }`}
+                >
                   {filter}
                 </Text>
               </TouchableOpacity>
@@ -350,18 +291,19 @@ export default function TransactionsScreen() {
           horizontal
           showsHorizontalScrollIndicator={false}
         >
-          <View
-            style={{
-              flexDirection: "row",
-              gap: 8,
-            }}
-          >
+          <View className="flex-row gap-2">
             <TouchableOpacity
               onPress={() => setActiveAccountId(null)}
-              style={getChipStyle(activeAccountId === null)}
+              className={`px-3.5 py-1.5 rounded-full border ${
+                activeAccountId === null
+                  ? "bg-[#1A1D26] border-[#1A1D26]"
+                  : "bg-white border-[#E8E6DF]"
+              }`}
             >
               <Text
-                style={getChipTextStyle(activeAccountId === null)}
+                className={`text-xs ${
+                  activeAccountId === null ? "text-white" : "text-[#6B6E77]"
+                }`}
               >
                 All Accounts
               </Text>
@@ -374,9 +316,17 @@ export default function TransactionsScreen() {
                 <TouchableOpacity
                   key={account.id}
                   onPress={() => setActiveAccountId(account.id)}
-                  style={getChipStyle(selected)}
+                  className={`px-3.5 py-1.5 rounded-full border ${
+                    selected
+                      ? "bg-[#1A1D26] border-[#1A1D26]"
+                      : "bg-white border-[#E8E6DF]"
+                  }`}
                 >
-                  <Text style={getChipTextStyle(selected)}>
+                  <Text
+                    className={`text-xs ${
+                      selected ? "text-white" : "text-[#6B6E77]"
+                    }`}
+                  >
                     {account.name}
                   </Text>
                 </TouchableOpacity>
@@ -388,59 +338,27 @@ export default function TransactionsScreen() {
 
       {/* Loading state */}
       {loading ? (
-        <View
-          style={{
-            flex: 1,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
+        <View className="flex-1 items-center justify-center">
           <ActivityIndicator color={COLORS.blue} />
         </View>
       ) : error ? (
         /* Error state */
-        <View
-          style={{
-            flex: 1,
-            alignItems: "center",
-            justifyContent: "center",
-            paddingHorizontal: 40,
-          }}
-        >
+        <View className="flex-1 items-center justify-center px-10">
           <Feather
             name="alert-circle"
             size={32}
             color={COLORS.coral}
           />
 
-          <Text
-            style={{
-              color: COLORS.mutedText,
-              fontSize: 14,
-              marginTop: 12,
-              textAlign: "center",
-            }}
-          >
+          <Text className="text-[#8A8D96] text-sm mt-3 text-center">
             Couldn&apos;t load transactions.
           </Text>
 
           <TouchableOpacity
             onPress={loadData}
-            style={{
-              marginTop: 16,
-              backgroundColor: COLORS.background,
-              borderRadius: 999,
-              paddingHorizontal: 16,
-              paddingVertical: 8,
-            }}
+            className="mt-4 bg-[#1A1D26] rounded-full px-4 py-2"
           >
-            <Text
-              style={{
-                color: COLORS.white,
-                fontSize: 12,
-                fontWeight: "500",
-              }}
-            >
+            <Text className="text-white text-xs font-medium">
               Retry
             </Text>
           </TouchableOpacity>
@@ -469,88 +387,25 @@ export default function TransactionsScreen() {
           }
           ListHeaderComponent={
             transactions.length > 0 ? (
-              <View
-                style={{
-                  backgroundColor: COLORS.white,
-                  borderRadius: 16,
-                  borderWidth: 1,
-                  borderColor: COLORS.border,
-                  padding: 16,
-                  marginBottom: 16,
-                }}
-              >
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    marginBottom: 12,
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: COLORS.background,
-                      fontSize: 12,
-                      fontWeight: "500",
-                    }}
-                  >
+              <View className="bg-white rounded-2xl border border-[#E8E6DF] p-4 mb-4">
+                <View className="flex-row justify-between items-center mb-3">
+                  <Text className="text-[#1A1D26] text-xs font-medium">
                     Daily income vs expense
                   </Text>
 
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      gap: 12,
-                    }}
-                  >
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        gap: 4,
-                      }}
-                    >
-                      <View
-                        style={{
-                          width: 8,
-                          height: 8,
-                          borderRadius: 4,
-                          backgroundColor: COLORS.success,
-                        }}
-                      />
+                  <View className="flex-row gap-3">
+                    <View className="flex-row items-center gap-1">
+                      <View className="w-2 h-2 rounded-full bg-[#3DDC84]" />
 
-                      <Text
-                        style={{
-                          fontSize: 10,
-                          color: COLORS.secondaryText,
-                        }}
-                      >
+                      <Text className="text-[10px] text-[#6B6E77]">
                         Income
                       </Text>
                     </View>
 
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        gap: 4,
-                      }}
-                    >
-                      <View
-                        style={{
-                          width: 8,
-                          height: 8,
-                          borderRadius: 4,
-                          backgroundColor: COLORS.coral,
-                        }}
-                      />
+                    <View className="flex-row items-center gap-1">
+                      <View className="w-2 h-2 rounded-full bg-[#FF6B4A]" />
 
-                      <Text
-                        style={{
-                          fontSize: 10,
-                          color: COLORS.secondaryText,
-                        }}
-                      >
+                      <Text className="text-[10px] text-[#6B6E77]">
                         Expense
                       </Text>
                     </View>
@@ -584,26 +439,14 @@ export default function TransactionsScreen() {
             ) : null
           }
           ListEmptyComponent={
-            <View
-              style={{
-                alignItems: "center",
-                justifyContent: "center",
-                paddingVertical: 80,
-              }}
-            >
+            <View className="items-center justify-center py-20">
               <Feather
                 name="inbox"
                 size={32}
                 color={COLORS.iconMuted}
               />
 
-              <Text
-                style={{
-                  color: COLORS.mutedText,
-                  fontSize: 14,
-                  marginTop: 12,
-                }}
-              >
+              <Text className="text-[#8A8D96] text-sm mt-3">
                 {search
                   ? "No matching transactions"
                   : "No transactions yet"}
@@ -618,16 +461,8 @@ export default function TransactionsScreen() {
         onPress={() =>
           router.push("/(root)/(tabs)/add-transaction")
         }
+        className="absolute right-5 bottom-5 w-14 h-14 rounded-full bg-[#1A1D26] items-center justify-center shadow-lg"
         style={{
-          position: "absolute",
-          right: 20,
-          bottom: 20,
-          width: 56,
-          height: 56,
-          borderRadius: 28,
-          backgroundColor: COLORS.background,
-          alignItems: "center",
-          justifyContent: "center",
           elevation: 8,
           shadowColor: "#000000",
           shadowOffset: {

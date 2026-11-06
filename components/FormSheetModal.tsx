@@ -26,30 +26,10 @@ export function FormSheetModal({
     >
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : undefined}
-        style={{
-          flex: 1,
-          justifyContent: "flex-end",
-          backgroundColor: "rgba(0, 0, 0, 0.4)",
-        }}
+        className="flex-1 justify-end bg-black/40"
       >
-        <View
-          style={{
-            backgroundColor: "#F8F7F2",
-            borderTopLeftRadius: 16,
-            borderTopRightRadius: 16,
-            paddingHorizontal: 20,
-            paddingTop: 20,
-            paddingBottom: 32,
-          }}
-        >
-          <Text
-            style={{
-              color: "#1A1D26",
-              fontSize: 16,
-              fontWeight: "600",
-              marginBottom: 16,
-            }}
-          >
+        <View className="bg-[#F8F7F2] rounded-t-2xl px-5 pt-5 pb-8">
+          <Text className="text-[#1A1D26] text-base font-semibold mb-4">
             {title}
           </Text>
 
@@ -57,17 +37,9 @@ export function FormSheetModal({
 
           <TouchableOpacity
             onPress={onClose}
-            style={{
-              paddingVertical: 8,
-              alignItems: "center",
-            }}
+            className="py-2 items-center"
           >
-            <Text
-              style={{
-                color: "#6B6E77",
-                fontSize: 14,
-              }}
-            >
+            <Text className="text-[#6B6E77] text-sm">
               Cancel
             </Text>
           </TouchableOpacity>

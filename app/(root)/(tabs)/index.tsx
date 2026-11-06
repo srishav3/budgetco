@@ -142,17 +142,11 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: "#1A1D26",
-      }}
+      className="flex-1 bg-[#1A1D26]"
       edges={["top"]}
     >
       <ScrollView
-        style={{
-          flex: 1,
-          backgroundColor: "#F8F7F2",
-        }}
+        className="flex-1 bg-[#F8F7F2]"
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl
@@ -162,61 +156,21 @@ export default function HomeScreen() {
         }
       >
         {/* Dark hero header */}
-        <View
-          style={{
-            backgroundColor: "#1A1D26",
-            borderBottomLeftRadius: 28,
-            borderBottomRightRadius: 28,
-            paddingHorizontal: 20,
-            paddingTop: 20,
-            paddingBottom: 22,
-          }}
-        >
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: 22,
-            }}
-          >
+        <View className="bg-[#1A1D26] rounded-b-[28px] px-5 pt-5 pb-[22px]">
+          <View className="flex-row justify-between items-center mb-[22px]">
             <Image
               source={require("../../../assets/images/budgetco-light-theme-logo.png")}
-              style={{
-                width: 80,
-                height: 40,
-              }}
+              className="w-20 h-10"
               contentFit="contain"
             />
 
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                gap: 10,
-              }}
-            >
-              <View
-                style={{
-                  alignItems: "flex-end",
-                }}
-              >
-                <Text
-                  style={{
-                    color: "#8A8D96",
-                    fontSize: 12,
-                  }}
-                >
+            <View className="flex-row items-center gap-2.5">
+              <View className="items-end">
+                <Text className="text-[#8A8D96] text-xs">
                   {getGreeting()}
                 </Text>
 
-                <Text
-                  style={{
-                    color: "#FFFFFF",
-                    fontSize: 16,
-                    fontWeight: "500",
-                  }}
-                >
+                <Text className="text-white text-base font-medium">
                   {user?.firstName ?? "there"}
                 </Text>
               </View>
@@ -225,23 +179,12 @@ export default function HomeScreen() {
                 onPress={() =>
                   router.push("/(root)/(tabs)/profile")
                 }
-                style={{
-                  width: 38,
-                  height: 38,
-                  borderRadius: 19,
-                  backgroundColor: "#1A1D26",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  overflow: "hidden",
-                }}
+                className="w-[38px] h-[38px] rounded-full bg-[#1A1D26] items-center justify-center overflow-hidden"
               >
                 {user?.imageUrl && user.hasImage ? (
                   <Image
                     source={{ uri: user.imageUrl }}
-                    style={{
-                      width: 38,
-                      height: 38,
-                    }}
+                    className="w-[38px] h-[38px]"
                     contentFit="cover"
                   />
                 ) : (
@@ -256,81 +199,36 @@ export default function HomeScreen() {
           </View>
 
           {/* Balance summary */}
-          <View
-            style={{
-              marginBottom: 22,
-            }}
-          >
-            <Text
-              style={{
-                color: "#8A8D96",
-                fontSize: 12,
-                marginBottom: 6,
-              }}
-            >
+          <View className="mb-[22px]">
+            <Text className="text-[#8A8D96] text-xs mb-1.5">
               Total balance
             </Text>
 
-            <Text
-              style={{
-                color: "#FFFFFF",
-                fontSize: 38,
-                fontWeight: "500",
-                letterSpacing: -0.5,
-              }}
-            >
+            <Text className="text-white text-[38px] font-medium tracking-tight">
               {formatPrice(totalBalance, currency)}
             </Text>
 
-            <View
-              style={{
-                flexDirection: "row",
-                gap: 14,
-                marginTop: 10,
-              }}
-            >
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  gap: 6,
-                }}
-              >
+            <View className="flex-row gap-3.5 mt-2.5">
+              <View className="flex-row items-center gap-1.5">
                 <Feather
                   name="arrow-up-right"
                   size={14}
                   color="#3DDC84"
                 />
 
-                <Text
-                  style={{
-                    color: "#3DDC84",
-                    fontSize: 13,
-                  }}
-                >
+                <Text className="text-[#3DDC84] text-[13px]">
                   {formatPrice(monthIncome, currency)}
                 </Text>
               </View>
 
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  gap: 6,
-                }}
-              >
+              <View className="flex-row items-center gap-1.5">
                 <Feather
                   name="arrow-down-right"
                   size={14}
                   color="#FF6B4A"
                 />
 
-                <Text
-                  style={{
-                    color: "#FF6B4A",
-                    fontSize: 13,
-                  }}
-                >
+                <Text className="text-[#FF6B4A] text-[13px]">
                   {formatPrice(monthExpense, currency)}
                 </Text>
               </View>
@@ -338,12 +236,7 @@ export default function HomeScreen() {
           </View>
 
           {/* Quick actions */}
-          <View
-            style={{
-              flexDirection: "row",
-              gap: 10,
-            }}
-          >
+          <View className="flex-row gap-2.5">
             {QUICK_ACTIONS.map((action) => (
               <TouchableOpacity
                 key={action.label}
@@ -354,24 +247,11 @@ export default function HomeScreen() {
                   })
                 }
                 activeOpacity={0.75}
-                style={{
-                  flex: 1,
-                  backgroundColor: "#252933",
-                  borderRadius: 16,
-                  borderWidth: 1,
-                  borderColor: "#343943",
-                  paddingVertical: 16,
-                  alignItems: "center",
-                  gap: 8,
-                }}
+                className="flex-1 bg-[#252933] rounded-2xl border border-[#343943] py-4 items-center gap-2"
               >
                 <View
+                  className="w-9 h-9 rounded-full items-center justify-center"
                   style={{
-                    width: 36,
-                    height: 36,
-                    borderRadius: 18,
-                    alignItems: "center",
-                    justifyContent: "center",
                     backgroundColor: `${action.color}26`,
                   }}
                 >
@@ -382,14 +262,7 @@ export default function HomeScreen() {
                   />
                 </View>
 
-                <Text
-                  style={{
-                    color: "#B8BAC2",
-                    fontSize: 11,
-                    fontWeight: "500",
-                    textAlign: "center",
-                  }}
-                >
+                <Text className="text-[#B8BAC2] text-[11px] font-medium text-center">
                   {action.label}
                 </Text>
               </TouchableOpacity>
@@ -398,57 +271,19 @@ export default function HomeScreen() {
         </View>
 
         {/* Light body */}
-        <View
-          style={{
-            paddingHorizontal: 20,
-            paddingTop: 18,
-            paddingBottom: 20,
-          }}
-        >
+        <View className="px-5 pt-4.5 pb-5">
           {/* AI assistant shortcut */}
           <TouchableOpacity
             onPress={() =>
               router.push("/(root)/(tabs)/assistant")
             }
-            style={{
-              backgroundColor: "#FFFFFF",
-              borderRadius: 18,
-              borderWidth: 1,
-              borderColor: "#E8E6DF",
-              padding: 14,
-              flexDirection: "row",
-              alignItems: "center",
-              gap: 10,
-              marginBottom: 18,
-            }}
+            className="bg-white rounded-[18px] border border-[#E8E6DF] p-3.5 flex-row items-center gap-2.5 mb-4.5"
           >
-            <View
-              style={{
-                width: 26,
-                height: 26,
-                borderRadius: 13,
-                backgroundColor: "#4A9EFF1A",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <View
-                style={{
-                  width: 7,
-                  height: 7,
-                  borderRadius: 4,
-                  backgroundColor: "#4A9EFF",
-                }}
-              />
+            <View className="w-[26px] h-[26px] rounded-full bg-[#4A9EFF]/10 items-center justify-center">
+              <View className="w-[7px] h-[7px] rounded-full bg-[#4A9EFF]" />
             </View>
 
-            <Text
-              style={{
-                color: "#8A8D96",
-                fontSize: 13,
-                flex: 1,
-              }}
-            >
+            <Text className="text-[#8A8D96] text-[13px] flex-1">
               Ask AI anything about your money
             </Text>
 
@@ -463,30 +298,10 @@ export default function HomeScreen() {
           <TouchableOpacity
             onPress={() => setBudgetModalOpen(true)}
             activeOpacity={0.85}
-            style={{
-              backgroundColor: "#FFFFFF",
-              borderRadius: 18,
-              borderWidth: 1,
-              borderColor: "#E8E6DF",
-              padding: 16,
-              marginBottom: 18,
-            }}
+            className="bg-white rounded-[18px] border border-[#E8E6DF] p-4 mb-4.5"
           >
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-                marginBottom: 10,
-              }}
-            >
-              <Text
-                style={{
-                  color: "#1A1D26",
-                  fontSize: 14,
-                  fontWeight: "500",
-                }}
-              >
+            <View className="flex-row items-center justify-between mb-2.5">
+              <Text className="text-[#1A1D26] text-sm font-medium">
                 Monthly budget
               </Text>
 
@@ -499,29 +314,15 @@ export default function HomeScreen() {
 
             {budget ? (
               <>
-                <Text
-                  style={{
-                    color: "#8A8D96",
-                    fontSize: 12,
-                    marginBottom: 8,
-                  }}
-                >
+                <Text className="text-[#8A8D96] text-xs mb-2">
                   {formatPrice(monthExpense, currency)} of{" "}
                   {formatPrice(budget.amount, currency)} spent
                 </Text>
 
-                <View
-                  style={{
-                    height: 8,
-                    borderRadius: 999,
-                    backgroundColor: "#F0EEE7",
-                    overflow: "hidden",
-                  }}
-                >
+                <View className="h-2 rounded-full bg-[#F0EEE7] overflow-hidden">
                   <View
+                    className="h-2 rounded-full"
                     style={{
-                      height: 8,
-                      borderRadius: 999,
                       width: `${
                         budget.amount > 0
                           ? Math.min(
@@ -543,12 +344,7 @@ export default function HomeScreen() {
                 </View>
               </>
             ) : (
-              <Text
-                style={{
-                  color: "#8A8D96",
-                  fontSize: 12,
-                }}
-              >
+              <Text className="text-[#8A8D96] text-xs">
                 Tap to set a monthly spending budget
               </Text>
             )}
@@ -556,33 +352,12 @@ export default function HomeScreen() {
 
           {/* Expense breakdown */}
           {expenseBreakdown.length > 0 && (
-            <View
-              style={{
-                backgroundColor: "#FFFFFF",
-                borderRadius: 18,
-                borderWidth: 1,
-                borderColor: "#E8E6DF",
-                padding: 16,
-                marginBottom: 18,
-              }}
-            >
-              <Text
-                style={{
-                  color: "#1A1D26",
-                  fontSize: 14,
-                  fontWeight: "500",
-                  marginBottom: 12,
-                }}
-              >
+            <View className="bg-white rounded-[18px] border border-[#E8E6DF] p-4 mb-4.5">
+              <Text className="text-[#1A1D26] text-sm font-medium mb-3">
                 Expense breakdown (this month)
               </Text>
 
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}
-              >
+              <View className="flex-row items-center">
                 <PieChart
                   data={expenseBreakdown.map((c) => ({
                     value: c.amount,
@@ -593,59 +368,29 @@ export default function HomeScreen() {
                   innerCircleColor="#FFFFFF"
                 />
 
-                <View
-                  style={{
-                    flex: 1,
-                    marginLeft: 16,
-                    gap: 6,
-                  }}
-                >
+                <View className="flex-1 ml-4 gap-1.5">
                   {expenseBreakdown.slice(0, 6).map((c) => (
                     <View
                       key={c.category}
-                      style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                      }}
+                      className="flex-row items-center justify-between"
                     >
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          alignItems: "center",
-                          gap: 6,
-                          flex: 1,
-                          marginRight: 4,
-                        }}
-                      >
+                      <View className="flex-row items-center gap-1.5 flex-1 mr-1">
                         <View
+                          className="w-2 h-2 rounded-full"
                           style={{
-                            width: 8,
-                            height: 8,
-                            borderRadius: 4,
                             backgroundColor: c.color,
                           }}
                         />
 
                         <Text
                           numberOfLines={1}
-                          style={{
-                            color: "#8A8D96",
-                            fontSize: 11,
-                            flexShrink: 1,
-                          }}
+                          className="text-[#8A8D96] text-[11px] shrink"
                         >
                           {getCategoryConfig(c.category).label}
                         </Text>
                       </View>
 
-                      <Text
-                        style={{
-                          color: "#1A1D26",
-                          fontSize: 11,
-                          fontWeight: "500",
-                        }}
-                      >
+                      <Text className="text-[#1A1D26] text-[11px] font-medium">
                         {formatPrice(c.amount, currency)}
                       </Text>
                     </View>
@@ -656,21 +401,8 @@ export default function HomeScreen() {
           )}
 
           {/* Recent transactions header */}
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: 12,
-            }}
-          >
-            <Text
-              style={{
-                color: "#1A1D26",
-                fontSize: 14,
-                fontWeight: "500",
-              }}
-            >
+          <View className="flex-row justify-between items-center mb-3">
+            <Text className="text-[#1A1D26] text-sm font-medium">
               Recent transactions
             </Text>
 
@@ -679,12 +411,7 @@ export default function HomeScreen() {
                 router.push("/(root)/(tabs)/transactions")
               }
             >
-              <Text
-                style={{
-                  color: "#8A8D96",
-                  fontSize: 12,
-                }}
-              >
+              <Text className="text-[#8A8D96] text-xs">
                 See all
               </Text>
             </TouchableOpacity>
@@ -692,34 +419,18 @@ export default function HomeScreen() {
 
           {/* Recent transactions list */}
           {loading ? (
-            <View
-              style={{
-                alignItems: "center",
-                paddingVertical: 24,
-              }}
-            >
+            <View className="items-center py-6">
               <ActivityIndicator color="#4A9EFF" />
             </View>
           ) : recentTransactions.length === 0 ? (
-            <View
-              style={{
-                alignItems: "center",
-                paddingVertical: 24,
-              }}
-            >
+            <View className="items-center py-6">
               <Feather
                 name="inbox"
                 size={28}
                 color="#BDC3C7"
               />
 
-              <Text
-                style={{
-                  color: "#8A8D96",
-                  fontSize: 14,
-                  marginTop: 12,
-                }}
-              >
+              <Text className="text-[#8A8D96] text-sm mt-3">
                 No transactions yet
               </Text>
             </View>

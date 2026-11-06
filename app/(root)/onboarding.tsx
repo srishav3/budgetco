@@ -116,87 +116,35 @@ export default function OnboardingScreen() {
 
   return (
     <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: "#F8F7F2",
-      }}
+      className="flex-1 bg-[#F8F7F2]"
       edges={["top"]}
     >
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{ flex: 1 }}
+        className="flex-1"
       >
-        <View
-          style={{
-            flex: 1,
-            paddingHorizontal: 24,
-            justifyContent: "center",
-            marginTop: -64,
-          }}
-        >
+        <View className="flex-1 px-6 justify-center -mt-16">
           <Image
             source={require("../../assets/images/budgetco.png")}
-            style={{
-              width: 200,
-              height: 150,
-              marginBottom: 32,
-              alignSelf: "center",
-            }}
+            className="w-[200px] h-[150px] mb-8 self-center"
             resizeMode="contain"
           />
 
-          <Text
-            style={{
-              color: "#1A1D26",
-              fontSize: 30,
-              fontWeight: "700",
-              marginBottom: 8,
-            }}
-          >
+          <Text className="text-[#1A1D26] text-3xl font-bold mb-2">
             Let&apos;s get you set up
           </Text>
 
-          <Text
-            style={{
-              color: "#8A8D96",
-              fontSize: 14,
-              marginBottom: 40,
-            }}
-          >
+          <Text className="text-[#8A8D96] text-sm mb-10">
             A couple of quick details to personalise your experience.
           </Text>
 
           {/* Starting balance */}
-          <Text
-            style={{
-              color: "#1A1D26",
-              fontSize: 12,
-              fontWeight: "500",
-              marginBottom: 6,
-            }}
-          >
+          <Text className="text-[#1A1D26] text-xs font-medium mb-1.5">
             Starting balance
           </Text>
 
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              backgroundColor: "#FFFFFF",
-              borderWidth: 1,
-              borderColor: "#E8E6DF",
-              borderRadius: 12,
-              paddingHorizontal: 16,
-              marginBottom: 4,
-            }}
-          >
-            <Text
-              style={{
-                color: "#6B6E77",
-                fontSize: 14,
-                marginRight: 8,
-              }}
-            >
+          <View className="flex-row items-center bg-white border border-[#E8E6DF] rounded-xl px-4 mb-1">
+            <Text className="text-[#6B6E77] text-sm mr-2">
               {selectedCurrency.symbol}
             </Text>
 
@@ -214,64 +162,30 @@ export default function OnboardingScreen() {
                   placeholderTextColor="#8A8D96"
                   keyboardType="numeric"
                   returnKeyType="done"
-                  style={{
-                    flex: 1,
-                    paddingVertical: 14,
-                    fontSize: 14,
-                    color: "#1A1D26",
-                  }}
+                  className="flex-1 py-3.5 text-sm text-[#1A1D26]"
                 />
               )}
             />
           </View>
 
           {formErrors.startingBalance && (
-            <Text
-              style={{
-                color: "#F16B65",
-                fontSize: 12,
-                marginBottom: 16,
-              }}
-            >
+            <Text className="text-[#F16B65] text-xs mb-4">
               {formErrors.startingBalance.message}
             </Text>
           )}
 
-          <View style={{ marginBottom: 16 }} />
+          <View className="mb-4" />
 
           {/* Currency picker */}
-          <Text
-            style={{
-              color: "#1A1D26",
-              fontSize: 12,
-              fontWeight: "500",
-              marginBottom: 6,
-            }}
-          >
+          <Text className="text-[#1A1D26] text-xs font-medium mb-1.5">
             Currency
           </Text>
 
           <TouchableOpacity
             onPress={() => setPickerOpen(true)}
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-              backgroundColor: "#FFFFFF",
-              borderWidth: 1,
-              borderColor: "#E8E6DF",
-              borderRadius: 12,
-              paddingHorizontal: 16,
-              paddingVertical: 14,
-              marginBottom: 24,
-            }}
+            className="flex-row items-center justify-between bg-white border border-[#E8E6DF] rounded-xl px-4 py-3.5 mb-6"
           >
-            <Text
-              style={{
-                fontSize: 14,
-                color: "#1A1D26",
-              }}
-            >
+            <Text className="text-sm text-[#1A1D26]">
               {selectedCurrency.symbol} {selectedCurrency.code} —{" "}
               {selectedCurrency.name}
             </Text>
@@ -284,13 +198,7 @@ export default function OnboardingScreen() {
           </TouchableOpacity>
 
           {error ? (
-            <Text
-              style={{
-                color: "#F16B65",
-                fontSize: 12,
-                marginBottom: 16,
-              }}
-            >
+            <Text className="text-[#F16B65] text-xs mb-4">
               {error}
             </Text>
           ) : null}
@@ -298,21 +206,10 @@ export default function OnboardingScreen() {
           <TouchableOpacity
             onPress={handleSubmit(handleSave)}
             disabled={saving}
-            style={{
-              backgroundColor: "#1A1D26",
-              borderRadius: 12,
-              paddingVertical: 16,
-              alignItems: "center",
-            }}
+            className="bg-[#1A1D26] rounded-xl py-4 items-center"
             activeOpacity={0.85}
           >
-            <Text
-              style={{
-                color: "#FFFFFF",
-                fontSize: 14,
-                fontWeight: "600",
-              }}
-            >
+            <Text className="text-white text-sm font-semibold">
               {saving ? "Saving…" : "Get started"}
             </Text>
           </TouchableOpacity>
