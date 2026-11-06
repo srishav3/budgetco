@@ -16,6 +16,8 @@
 
 </div>
 
+> 🧭 **New to this repository?** Read the comprehensive [**Codebase Walkthrough & Navigation Guide**](CODEBASE_WALKTHROUGH.md) to understand the project architecture and the exact 10-step sequence to explore the codebase.
+
 ---
 
 ## 📖 Overview & Problem Statement
