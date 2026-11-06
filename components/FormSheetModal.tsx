@@ -23,13 +23,22 @@ export function FormSheetModal({
       visible={visible}
       animationType="slide"
       transparent
+      onRequestClose={onClose}
     >
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : undefined}
-        className="flex-1 justify-end bg-black/40"
+        className="flex-1 justify-end bg-black/50"
       >
-        <View className="bg-[#F8F7F2] rounded-t-2xl px-5 pt-5 pb-8">
-          <Text className="text-[#1A1D26] text-base font-semibold mb-4">
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={onClose}
+          className="flex-1"
+        />
+        <View className="bg-[#F8F7F2] rounded-t-[32px] px-6 pt-3 pb-8 border-t border-[#E8E6DF] shadow-2xl">
+          {/* Grab handle indicator */}
+          <View className="w-11 h-1.5 bg-[#D5D3CC] rounded-full self-center mb-4 mt-1" />
+
+          <Text className="text-[#1A1D26] text-lg font-bold mb-4 tracking-tight">
             {title}
           </Text>
 
@@ -37,9 +46,9 @@ export function FormSheetModal({
 
           <TouchableOpacity
             onPress={onClose}
-            className="py-2 items-center"
+            className="py-2.5 items-center mt-1 active:opacity-70"
           >
-            <Text className="text-[#6B6E77] text-sm">
+            <Text className="text-[#6B6E77] text-sm font-medium">
               Cancel
             </Text>
           </TouchableOpacity>

@@ -1,4 +1,3 @@
-
 import {
   useCreateAccount,
   useDeleteAccount,
@@ -15,7 +14,7 @@ const ACCOUNT_TYPES: AccountType[] = ["CASH", "BANK", "CREDIT_CARD", "SAVINGS"];
 const ACCOUNT_TYPE_LABEL: Record<AccountType, string> = {
   CASH: "Cash",
   BANK: "Bank",
-  CREDIT_CARD: "Credit card",
+  CREDIT_CARD: "Credit Card",
   SAVINGS: "Savings",
 };
 
@@ -109,23 +108,23 @@ export function AccountModal({
   return (
     <FormSheetModal
       visible={visible}
-      title={isEditing ? "Edit account" : "Add account"}
+      title={isEditing ? "Edit Account" : "Add Account"}
       onClose={onClose}
     >
-      <Text className="text-[#0B0E14] text-xs font-medium mb-1.5">
-        Name
+      <Text className="text-[#6B6E77] text-xs font-semibold uppercase tracking-wider mb-2">
+        Account Name
       </Text>
 
       <TextInput
         value={name}
         onChangeText={setName}
-        placeholder="e.g. HDFC Savings"
+        placeholder="e.g. HDFC Savings, Cash Wallet"
         placeholderTextColor={COLORS.placeholder}
-        className="bg-white border border-[#E8E6DF] rounded-xl px-4 py-3.5 text-sm text-[#0B0E14] mb-5"
+        className="bg-white border border-[#E8E6DF] rounded-2xl px-4 py-3.5 text-sm text-[#1A1D26] mb-4 shadow-sm shadow-black/5"
       />
 
-      <Text className="text-[#0B0E14] text-xs font-medium mb-1.5">
-        Type
+      <Text className="text-[#6B6E77] text-xs font-semibold uppercase tracking-wider mb-2">
+        Account Type
       </Text>
 
       <View className="flex-row flex-wrap gap-2 mb-5">
@@ -133,13 +132,16 @@ export function AccountModal({
           <TouchableOpacity
             key={t}
             onPress={() => setType(t)}
-            className={`px-3.5 py-2 rounded-full border ${
-              type === t ? "bg-[#0B0E14] border-[#0B0E14]" : "bg-white border-[#E8E6DF]"
+            className={`px-4 py-2.5 rounded-xl border ${
+              type === t
+                ? "bg-[#1A1D26] border-[#1A1D26] shadow-sm shadow-black/10"
+                : "bg-white border-[#E8E6DF]"
             }`}
+            activeOpacity={0.8}
           >
             <Text
-              className={`text-xs font-medium ${
-                type === t ? "text-white" : "text-[#0B0E14]"
+              className={`text-xs font-semibold ${
+                type === t ? "text-white" : "text-[#6B6E77]"
               }`}
             >
               {ACCOUNT_TYPE_LABEL[t]}
@@ -149,29 +151,31 @@ export function AccountModal({
       </View>
 
       {error ? (
-        <Text className="text-[#FF6B4A] text-xs mb-3">
-          {error}
-        </Text>
+        <View className="bg-[#FF6B4A]/10 border border-[#FF6B4A]/30 rounded-xl px-4 py-2.5 mb-4">
+          <Text className="text-[#FF6B4A] text-xs font-medium">{error}</Text>
+        </View>
       ) : null}
 
       <TouchableOpacity
         onPress={handleSave}
         disabled={saving}
-        className="bg-[#0B0E14] rounded-xl py-4 items-center mb-3"
+        className={`bg-[#1A1D26] rounded-2xl py-4 items-center mb-3 shadow-sm shadow-black/10 ${
+          saving ? "opacity-70" : "active:opacity-90"
+        }`}
         activeOpacity={0.85}
       >
-        <Text className="text-white text-sm font-semibold">
-          {saving ? "Saving…" : isEditing ? "Save changes" : "Add account"}
+        <Text className="text-white text-sm font-semibold tracking-wide">
+          {saving ? "Saving…" : isEditing ? "Save Changes" : "Create Account"}
         </Text>
       </TouchableOpacity>
 
       {isEditing && !account.is_default && (
         <TouchableOpacity
           onPress={onMadeDefault}
-          className="py-3 items-center"
+          className="py-2.5 items-center"
         >
-          <Text className="text-[#1A85FF] text-sm font-medium">
-            Make default
+          <Text className="text-[#4A9EFF] text-sm font-semibold">
+            Set as Default Account
           </Text>
         </TouchableOpacity>
       )}
@@ -179,10 +183,10 @@ export function AccountModal({
       {isEditing && (
         <TouchableOpacity
           onPress={handleDelete}
-          className="py-3 items-center"
+          className="py-2.5 items-center"
         >
-          <Text className="text-[#FF6B4A] text-sm font-medium">
-            Delete account
+          <Text className="text-[#FF6B4A] text-sm font-semibold">
+            Delete Account
           </Text>
         </TouchableOpacity>
       )}

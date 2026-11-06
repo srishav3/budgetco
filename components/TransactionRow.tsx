@@ -28,7 +28,7 @@ export function TransactionRow({
 
   const row = (
     <View
-      className="flex-row items-center bg-white rounded-2xl border border-[#E8E6DF] pl-3 pr-3.5 py-4 border-l-[3px]"
+      className="flex-row items-center bg-white rounded-2xl border border-[#E8E6DF] pl-3.5 pr-4 py-3.5 border-l-[3.5px] shadow-sm shadow-black/5"
       style={{
         borderLeftColor: config.color,
       }}
@@ -42,10 +42,10 @@ export function TransactionRow({
         <Text className="text-lg">{config.icon}</Text>
       </View>
 
-      <View className="flex-1">
+      <View className="flex-1 mr-2">
         <Text
           numberOfLines={1}
-          className="text-[#1A1D26] text-sm font-medium"
+          className="text-[#1A1D26] text-sm font-semibold mb-0.5"
         >
           {tx.description || config.label}
         </Text>
@@ -58,7 +58,7 @@ export function TransactionRow({
           />
 
           <View
-            className="px-1.5 py-0.5 rounded-full"
+            className="px-2 py-0.5 rounded-full"
             style={{
               backgroundColor: `${config.color}1A`,
             }}
@@ -80,7 +80,7 @@ export function TransactionRow({
                 size={11}
                 color="#FF6B4A"
               />
-              <Text className="text-[#FF6B4A] text-[11px]">
+              <Text className="text-[#FF6B4A] text-[11px] font-medium">
                 Flagged
               </Text>
             </View>
@@ -89,7 +89,7 @@ export function TransactionRow({
       </View>
 
       <Text
-        className={`text-sm font-medium ${
+        className={`text-[15px] font-semibold tracking-tight ${
           isIncome ? "text-[#3DDC84]" : "text-[#FF6B4A]"
         }`}
       >
@@ -100,17 +100,17 @@ export function TransactionRow({
   );
 
   if (!onDelete) {
-    return <View className="mb-2.5">{row}</View>;
+    return <View className="mb-3">{row}</View>;
   }
 
   return (
-    <View className="mb-2.5">
+    <View className="mb-3">
       <Swipeable
         overshootRight={false}
         renderRightActions={() => (
           <TouchableOpacity
             onPress={onDelete}
-            className="bg-[#FF6B4A] rounded-2xl ml-2 w-16 items-center justify-center"
+            className="bg-[#FF6B4A] rounded-2xl ml-2 w-16 items-center justify-center shadow-sm"
           >
             <Feather name="trash-2" size={18} color="#FFFFFF" />
           </TouchableOpacity>

@@ -3,7 +3,7 @@ import { Budget } from "@/lib/services/budgets";
 import { COLORS } from "@/constants/theme";
 import { FormSheetModal } from "./FormSheetModal";
 import { useEffect, useState } from "react";
-import { Text, TextInput, TouchableOpacity } from "react-native";
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
 
 export function BudgetModal({
   visible,
@@ -35,7 +35,7 @@ export function BudgetModal({
     const parsedAmount = parseFloat(amount.replace(/,/g, ""));
 
     if (!parsedAmount || parsedAmount <= 0) {
-      setError("Enter a valid monthly budget.");
+      setError("Enter a valid monthly budget amount.");
       return;
     }
 
@@ -53,11 +53,11 @@ export function BudgetModal({
   return (
     <FormSheetModal
       visible={visible}
-      title={budget ? "Edit monthly budget" : "Set monthly budget"}
+      title={budget ? "Edit Monthly Budget" : "Set Monthly Budget"}
       onClose={onClose}
     >
-      <Text className="text-[#1A1D26] text-xs font-medium mb-1.5">
-        Monthly budget
+      <Text className="text-[#6B6E77] text-xs font-semibold uppercase tracking-wider mb-2">
+        Budget Target
       </Text>
 
       <TextInput
@@ -70,25 +70,27 @@ export function BudgetModal({
         placeholderTextColor={COLORS.placeholder}
         keyboardType="numeric"
         autoFocus
-        className="bg-white border border-[#E8E6DF] rounded-xl px-4 py-3.5 mb-5 text-sm text-[#1A1D26]"
+        className="bg-white border border-[#E8E6DF] rounded-2xl px-4 py-3.5 mb-4 text-base font-semibold text-[#1A1D26] shadow-sm shadow-black/5"
       />
 
       {error ? (
-        <Text className="text-[#FF6B4A] text-xs mb-3">
-          {error}
-        </Text>
+        <View className="bg-[#FF6B4A]/10 border border-[#FF6B4A]/30 rounded-xl px-4 py-2.5 mb-4">
+          <Text className="text-[#FF6B4A] text-xs font-medium">
+            {error}
+          </Text>
+        </View>
       ) : null}
 
       <TouchableOpacity
         onPress={handleSave}
         disabled={saving}
-        className={`bg-[#1A1D26] rounded-xl py-4 items-center mb-3 ${
-          saving ? "opacity-70" : "opacity-100"
+        className={`bg-[#1A1D26] rounded-2xl py-4 items-center mb-3 shadow-sm shadow-black/10 ${
+          saving ? "opacity-70" : "active:opacity-90"
         }`}
         activeOpacity={0.85}
       >
-        <Text className="text-white text-sm font-semibold">
-          {saving ? "Saving…" : "Save budget"}
+        <Text className="text-white text-sm font-semibold tracking-wide">
+          {saving ? "Saving…" : "Save Budget"}
         </Text>
       </TouchableOpacity>
     </FormSheetModal>

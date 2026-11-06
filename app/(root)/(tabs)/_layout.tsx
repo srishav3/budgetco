@@ -9,11 +9,11 @@ export default function TabLayout() {
   if (useNativeTabs) {
     return (
       <NativeTabs
-        backgroundColor="#0B0E14"
+        backgroundColor="#1A1D26"
         tintColor="#4A9EFF"
-        iconColor={{ default: "#5C5F68", selected: "#4A9EFF" }}
+        iconColor={{ default: "#8A8D96", selected: "#4A9EFF" }}
         labelStyle={{
-          default: { color: "#5C5F68" },
+          default: { color: "#8A8D96" },
           selected: { color: "#4A9EFF" },
         }}
       >
@@ -50,13 +50,21 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: "#4A9EFF",
-        tabBarInactiveTintColor: "#5C5F68",
+        tabBarActiveTintColor: "#1A1D26",
+        tabBarInactiveTintColor: "#8A8D96",
         tabBarStyle: {
           backgroundColor: "#FFFFFF",
           borderTopColor: "#E8E6DF",
-          paddingTop: 4,
-          height: 70,
+          borderTopWidth: 1,
+          paddingTop: 8,
+          paddingBottom: Platform.OS === "android" ? 10 : 8,
+          height: Platform.OS === "android" ? 68 : 64,
+          elevation: 10,
+        },
+        tabBarLabelStyle: {
+          fontSize: 11,
+          fontWeight: "600",
+          marginTop: 2,
         },
       }}
     >
@@ -64,8 +72,8 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Home",
-          tabBarIcon: ({ color, size }) => (
-            <Feather name="home" size={size} color={color} />
+          tabBarIcon: ({ color, focused }) => (
+            <Feather name="home" size={focused ? 22 : 20} color={color} />
           ),
         }}
       />
@@ -73,8 +81,8 @@ export default function TabLayout() {
         name="transactions"
         options={{
           title: "Transactions",
-          tabBarIcon: ({ color, size }) => (
-            <Feather name="list" size={size} color={color} />
+          tabBarIcon: ({ color, focused }) => (
+            <Feather name="list" size={focused ? 22 : 20} color={color} />
           ),
         }}
       />
@@ -82,8 +90,8 @@ export default function TabLayout() {
         name="add-transaction"
         options={{
           title: "Add",
-          tabBarIcon: ({ color, size }) => (
-            <Feather name="plus-circle" size={size} color={color} />
+          tabBarIcon: ({ color, focused }) => (
+            <Feather name="plus-circle" size={focused ? 24 : 22} color={color} />
           ),
         }}
       />
@@ -91,8 +99,8 @@ export default function TabLayout() {
         name="assistant"
         options={{
           title: "Assistant",
-          tabBarIcon: ({ color, size }) => (
-            <Feather name="cpu" size={size} color={color} />
+          tabBarIcon: ({ color, focused }) => (
+            <Feather name="cpu" size={focused ? 22 : 20} color={color} />
           ),
         }}
       />
@@ -100,8 +108,8 @@ export default function TabLayout() {
         name="profile"
         options={{
           title: "Profile",
-          tabBarIcon: ({ color, size }) => (
-            <Feather name="user" size={size} color={color} />
+          tabBarIcon: ({ color, focused }) => (
+            <Feather name="user" size={focused ? 22 : 20} color={color} />
           ),
         }}
       />

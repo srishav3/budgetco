@@ -21,6 +21,7 @@ import {
   extractTransactionFromReceipt,
 } from "@/lib/services/extractTransaction";
 import { InputMethod } from "@/lib/services/transactions";
+import { useUserStore } from "@/store/userStore";
 import { useUser } from "@clerk/expo";
 import { Feather } from "@expo/vector-icons";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -59,6 +60,7 @@ export default function AddTransactionScreen() {
   const { user } = useUser();
   const router = useRouter();
   const params = useLocalSearchParams<{ action?: string }>();
+  const currency = useUserStore((state) => state.currency);
 
   const {
     data: accounts = [],
@@ -195,10 +197,13 @@ export default function AddTransactionScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-[#F5F4F0]" edges={["top"]}>
-      <View className="px-5 pt-3 pb-2">
-        <Text className="text-[#0B0E14] text-xl font-semibold">
-          Add transaction
+    <SafeAreaView className="flex-1 bg-[#F8F7F2]" edges={["top"]}>
+      <View className="px-5 pt-3 pb-3">
+        <Text className="text-[#1A1D26] text-2xl font-bold tracking-tight">
+          Add Transaction
+        </Text>
+        <Text className="text-[#6B6E77] text-xs mt-0.5 font-medium">
+          Record a new expense or income
         </Text>
       </View>
 
@@ -208,50 +213,68 @@ export default function AddTransactionScreen() {
       >
         {loadingAccounts ? (
           <View className="flex-1 items-center justify-center">
-            <ActivityIndicator color="#4A9EFF" />
+            <ActivityIndicator size="large" color="#4A9EFF" />
           </View>
         ) : accountsError ? (
           <View className="flex-1 items-center justify-center px-10">
-            <Feather name="alert-circle" size={32} color="#FF6B4A" />
-            <Text className="text-[#5C5F68] text-sm mt-3 text-center">
-              Couldn&apos;t load your accounts.
+            <View className="w-14 h-14 rounded-2xl bg-[#FF6B4A]/10 items-center justify-center mb-3">
+              <Feather name="alert-circle" size={28} color="#FF6B4A" />
+            </View>
+            <Text className="text-[#1A1D26] text-base font-semibold text-center">
+              Couldn&apos;t load accounts
+            </Text>
+            <Text className="text-[#8A8D96] text-xs mt-1 text-center">
+              Please check your network and try again.
             </Text>
           </View>
         ) : accounts.length === 0 ? (
           <View className="flex-1 items-center justify-center px-10">
-            <Feather name="alert-circle" size={32} color="#FF6B4A" />
-            <Text className="text-[#5C5F68] text-sm mt-3 text-center">
+            <View className="w-14 h-14 rounded-2xl bg-[#4A9EFF]/10 items-center justify-center mb-3">
+              <Feather name="credit-card" size={28} color="#4A9EFF" />
+            </View>
+            <Text className="text-[#1A1D26] text-base font-semibold text-center">
+              No accounts found
+            </Text>
+            <Text className="text-[#8A8D96] text-xs mt-1 text-center mb-4">
               You need an account before adding a transaction.
             </Text>
+            <TouchableOpacity
+              onPress={() => router.push("/(root)/(tabs)/profile")}
+              className="bg-[#1A1D26] px-5 py-2.5 rounded-xl shadow-sm shadow-black/10"
+            >
+              <Text className="text-white text-xs font-semibold">
+                Go to Profile to Add Account
+              </Text>
+            </TouchableOpacity>
           </View>
         ) : (
           <ScrollView
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{
               paddingHorizontal: 20,
-              paddingBottom: 100,
+              paddingBottom: 110,
             }}
           >
             {/* AI capture shortcuts */}
-            <View className="flex-row gap-2.5 mb-4">
+            <View className="flex-row gap-3 mb-5 mt-1">
               <AIActionCard
                 icon="camera"
-                title="Scan receipt"
-                subtitle="Snap a photo"
+                title="Scan Receipt"
+                subtitle="Auto-read bill details"
                 colors={AI_GRADIENT}
                 onPress={() => setScannerOpen(true)}
               />
               <AIActionCard
                 icon="mic"
-                title="Voice log"
-                subtitle="Just say it"
+                title="Voice Log"
+                subtitle="Speak your expense"
                 colors={AI_GRADIENT_REVERSE}
                 onPress={() => setVoiceModalOpen(true)}
               />
             </View>
 
             {/* Type toggle */}
-            <View className="flex-row bg-white rounded-xl border border-[#E8E6DF] p-1 mb-4">
+            <View className="flex-row bg-white rounded-2xl border border-[#E8E6DF] p-1.5 mb-5 shadow-sm shadow-black/5">
               {TYPE_OPTIONS.map((t) => (
                 <TouchableOpacity
                   key={t.key}
@@ -264,13 +287,16 @@ export default function AddTransactionScreen() {
                         : EXPENSE_CATEGORIES[0].key
                     );
                   }}
-                  className={`flex-1 py-2 rounded-lg items-center ${
-                    type === t.key ? "bg-[#0B0E14]" : "bg-transparent"
+                  className={`flex-1 py-2.5 rounded-xl items-center ${
+                    type === t.key
+                      ? "bg-[#1A1D26] shadow-sm shadow-black/10"
+                      : "bg-transparent"
                   }`}
+                  activeOpacity={0.8}
                 >
                   <Text
-                    className={`text-xs font-medium ${
-                      type === t.key ? "text-white" : "text-[#8A8D96]"
+                    className={`text-xs font-semibold ${
+                      type === t.key ? "text-white" : "text-[#6B6E77]"
                     }`}
                   >
                     {t.label}
@@ -280,39 +306,44 @@ export default function AddTransactionScreen() {
             </View>
 
             {/* Amount */}
-            <Text className="text-[#0B0E14] text-xs font-medium mb-1.5">
-              Amount
+            <Text className="text-[#6B6E77] text-xs font-semibold uppercase tracking-wider mb-2">
+              Amount ({currency})
             </Text>
             <Controller
               control={control}
               name="amount"
               render={({ field: { value, onChange, onBlur } }) => (
-                <TextInput
-                  value={value}
-                  onChangeText={(v) => {
-                    setError("");
-                    onChange(v);
-                  }}
-                  onBlur={onBlur}
-                  placeholder="0"
-                  placeholderTextColor="#8A8D96"
-                  keyboardType="numeric"
-                  className="bg-white border border-[#E8E6DF] rounded-xl px-4 py-3.5 text-sm text-[#0B0E14]"
-                />
+                <View className="flex-row items-center bg-white border border-[#E8E6DF] rounded-2xl px-4 py-3.5 shadow-sm shadow-black/5">
+                  <Text className="text-lg font-bold text-[#1A1D26] mr-2">
+                    {currency}
+                  </Text>
+                  <TextInput
+                    value={value}
+                    onChangeText={(v) => {
+                      setError("");
+                      onChange(v);
+                    }}
+                    onBlur={onBlur}
+                    placeholder="0.00"
+                    placeholderTextColor="#8A8D96"
+                    keyboardType="numeric"
+                    className="flex-1 text-lg font-semibold text-[#1A1D26] py-0"
+                  />
+                </View>
               )}
             />
             {errors.amount && (
-              <Text className="text-[#FF6B4A] text-xs mt-1.5">
+              <Text className="text-[#FF6B4A] text-xs mt-1.5 ml-1">
                 {errors.amount.message}
               </Text>
             )}
-            <View className="mb-4" />
+            <View className="mb-5" />
 
             {/* Category */}
-            <Text className="text-[#0B0E14] text-xs font-medium mb-1.5">
+            <Text className="text-[#6B6E77] text-xs font-semibold uppercase tracking-wider mb-2">
               Category
             </Text>
-            <View className="mb-4">
+            <View className="mb-5">
               <PillGroup
                 options={categories.map((c) => ({
                   key: c.key,
@@ -325,7 +356,7 @@ export default function AddTransactionScreen() {
             </View>
 
             {/* Account */}
-            <Text className="text-[#0B0E14] text-xs font-medium mb-1.5">
+            <Text className="text-[#6B6E77] text-xs font-semibold uppercase tracking-wider mb-2">
               Account
             </Text>
             <View className="mb-1">
@@ -336,28 +367,28 @@ export default function AddTransactionScreen() {
               />
             </View>
             {errors.accountId && (
-              <Text className="text-[#FF6B4A] text-xs mb-3">
+              <Text className="text-[#FF6B4A] text-xs mt-1.5 mb-3 ml-1">
                 {errors.accountId.message}
               </Text>
             )}
-            <View className="mb-3" />
+            <View className="mb-4" />
 
             {/* Date */}
-            <Text className="text-[#0B0E14] text-xs font-medium mb-1.5">
+            <Text className="text-[#6B6E77] text-xs font-semibold uppercase tracking-wider mb-2">
               Date
             </Text>
             <TouchableOpacity
               onPress={() => setDatePickerOpen((v) => !v)}
-              className="flex-row items-center justify-between bg-white border border-[#E8E6DF] rounded-xl px-4 py-3.5 mb-1"
+              className="flex-row items-center justify-between bg-white border border-[#E8E6DF] rounded-2xl px-4 py-3.5 mb-1 shadow-sm shadow-black/5 active:bg-[#F2EFE9]"
             >
-              <Text className="text-sm text-[#0B0E14]">
+              <Text className="text-sm font-medium text-[#1A1D26]">
                 {format(date, "d MMM yyyy")}
               </Text>
-              <Feather name="calendar" size={16} color="#5C5F68" />
+              <Feather name="calendar" size={17} color="#5C5F68" />
             </TouchableOpacity>
 
             {datePickerOpen && (
-              <View className="bg-white border border-[#E8E6DF] rounded-xl mb-4 overflow-hidden">
+              <View className="bg-white border border-[#E8E6DF] rounded-2xl mb-5 mt-2 p-2 shadow-sm shadow-black/5 overflow-hidden">
                 <CalendarPicker
                   value={date}
                   maximumDate={new Date()}
@@ -368,10 +399,10 @@ export default function AddTransactionScreen() {
                 />
               </View>
             )}
-            {!datePickerOpen && <View className="mb-4" />}
+            {!datePickerOpen && <View className="mb-5" />}
 
             {/* Description */}
-            <Text className="text-[#0B0E14] text-xs font-medium mb-1.5">
+            <Text className="text-[#6B6E77] text-xs font-semibold uppercase tracking-wider mb-2">
               Description (optional)
             </Text>
             <Controller
@@ -382,25 +413,29 @@ export default function AddTransactionScreen() {
                   value={value}
                   onChangeText={onChange}
                   onBlur={onBlur}
-                  placeholder="e.g. Swiggy order"
+                  placeholder="e.g. Swiggy lunch, Grocery, Metro recharge"
                   placeholderTextColor="#8A8D96"
-                  className="bg-white border border-[#E8E6DF] rounded-xl px-4 py-3.5 mb-4 text-sm text-[#0B0E14]"
+                  className="bg-white border border-[#E8E6DF] rounded-2xl px-4 py-3.5 mb-5 text-sm text-[#1A1D26] shadow-sm shadow-black/5"
                 />
               )}
             />
 
             {error ? (
-              <Text className="text-[#FF6B4A] text-xs mb-4">{error}</Text>
+              <View className="bg-[#FF6B4A]/10 border border-[#FF6B4A]/30 rounded-xl px-4 py-3 mb-5">
+                <Text className="text-[#FF6B4A] text-xs font-medium">{error}</Text>
+              </View>
             ) : null}
 
             <TouchableOpacity
               onPress={handleSubmit(onSubmit)}
               disabled={saving}
-              className="bg-[#0B0E14] rounded-xl py-4 items-center mb-2"
+              className={`bg-[#1A1D26] rounded-2xl py-4 items-center mb-4 shadow-sm shadow-black/10 ${
+                saving ? "opacity-70" : "active:opacity-90"
+              }`}
               activeOpacity={0.85}
             >
-              <Text className="text-white text-sm font-semibold">
-                {saving ? "Saving…" : "Save transaction"}
+              <Text className="text-white text-base font-semibold tracking-wide">
+                {saving ? "Saving…" : "Save Transaction"}
               </Text>
             </TouchableOpacity>
           </ScrollView>
@@ -409,9 +444,10 @@ export default function AddTransactionScreen() {
 
       {scanning && (
         <View className="absolute inset-0 items-center justify-center bg-black/40">
-          <View className="bg-white rounded-2xl px-6 py-5 items-center">
-            <ActivityIndicator color="#4A9EFF" />
-            <Text className="text-[#0B0E14] text-sm mt-3">Reading receipt…</Text>
+          <View className="bg-white rounded-2xl px-6 py-5 items-center shadow-lg">
+            <ActivityIndicator size="large" color="#4A9EFF" />
+            <Text className="text-[#1A1D26] text-sm font-semibold mt-3">Reading receipt…</Text>
+            <Text className="text-[#8A8D96] text-xs mt-0.5">Gemini AI is parsing the image</Text>
           </View>
         </View>
       )}
