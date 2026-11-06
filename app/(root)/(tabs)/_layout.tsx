@@ -1,51 +1,8 @@
 import { Feather } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
-import { Icon, Label, NativeTabs } from "expo-router/unstable-native-tabs";
 import { Platform } from "react-native";
 
-const useNativeTabs = Platform.OS === "ios";
-
 export default function TabLayout() {
-  if (useNativeTabs) {
-    return (
-      <NativeTabs
-        backgroundColor="#1A1D26"
-        tintColor="#4A9EFF"
-        iconColor={{ default: "#8A8D96", selected: "#4A9EFF" }}
-        labelStyle={{
-          default: { color: "#8A8D96" },
-          selected: { color: "#4A9EFF" },
-        }}
-      >
-        <NativeTabs.Trigger name="index">
-          <Label>Home</Label>
-          <Icon sf="house.fill" />
-        </NativeTabs.Trigger>
-
-        <NativeTabs.Trigger name="transactions">
-          <Icon sf="list.bullet" />
-          <Label>Transactions</Label>
-        </NativeTabs.Trigger>
-
-        <NativeTabs.Trigger name="add-transaction">
-          <Icon sf="plus.circle.fill" />
-          <Label>Add</Label>
-        </NativeTabs.Trigger>
-
-        <NativeTabs.Trigger name="assistant">
-          <Icon sf="brain.head.profile" />
-          <Label>Assistant</Label>
-        </NativeTabs.Trigger>
-
-        <NativeTabs.Trigger name="profile">
-          <Icon sf="person.fill" />
-          <Label>Profile</Label>
-        </NativeTabs.Trigger>
-      </NativeTabs>
-    );
-  }
-
-  // Android / Expo Go fallback — standard JS-based tab bar
   return (
     <Tabs
       screenOptions={{

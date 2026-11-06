@@ -24,7 +24,14 @@ export default function RootGroupLayout() {
 
   if (!minLoadDone || needsOnboarding === null) {
     return (
-      <View className="flex-1 bg-[#F8F7F2] items-center justify-center">
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: "#F8F7F2",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <ActivityIndicator size="large" color="#1A1D26" />
       </View>
     );
