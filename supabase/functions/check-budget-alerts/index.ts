@@ -26,114 +26,147 @@ function isSameMonth(a: Date, b: Date) {
 }
 
 Deno.serve(async () => {
-  const supabase = createSupabaseAdmin();
-  const now = new Date();
+  try {
+    const supabase = createSupabaseAdmin();
+    const now = new Date();
 
-  const { data: budgets, error: budgetsError } = await supabase
-    .from("budgets")
-    .select("id, user_id, amount, last_alert_sent, last_alert_threshold");
-  if (budgetsError) throw budgetsError;
-
-  let sent = 0;
-
-  for (const budget of budgets ?? []) {
-    if (!budget.amount || budget.amount <= 0) continue;
-
-    const { data: user } = await supabase
-      .from("users")
-      .select("email, name, currency")
-      .eq("clerk_id", budget.user_id)
-      .single();
-    if (!user?.email) continue;
-
-    const { data: expenseRows, error: expenseError } = await supabase
-      .from("transactions")
-      .select("amount")
-      .eq("user_id", budget.user_id)
-      .eq("type", "EXPENSE")
-      .gte("date", startOfMonth());
-    if (expenseError) throw expenseError;
-
-    const spent = (expenseRows ?? []).reduce((sum, tx) => sum + tx.amount, 0);
-    const percent = (spent / budget.amount) * 100;
-
-    // A previous alert only counts against this month's thresholds if it was
-    // actually sent this month — a new month means every threshold resets.
-    const alertedThisMonth =
-      budget.last_alert_sent &&
-      isSameMonth(new Date(budget.last_alert_sent), now)
-        ? budget.last_alert_threshold
-        : null;
-
-    const threshold = THRESHOLDS.find(
-      (t) => percent >= t && (alertedThisMonth === null || alertedThisMonth < t)
-    );
-    if (!threshold) continue;
-
-    const currency = user.currency ?? "USD";
-    const remaining = budget.amount - spent;
-    const monthLabel = now.toLocaleDateString("en-US", {
-      month: "long",
-      year: "numeric",
-      timeZone: "UTC",
-    });
-
-    const subject =
-      threshold >= 100
-        ? "budgetco Budget Alert: You've reached your monthly limit"
-        : `budgetco Budget Alert: ${threshold}% of your ${monthLabel} budget used`;
-
-    const html = wrapEmail(`
-      <p style="margin:0 0 16px;">Hi ${user.name ?? "there"},</p>
-      <p style="margin:0 0 20px;">
-        ${
-          threshold >= 100
-            ? `You've reached your <strong>${monthLabel}</strong> budget. Here's where things stand:`
-            : `You've used <strong>${threshold}%</strong> of your <strong>${monthLabel}</strong> budget — sending this early so you can pace the rest of the month.`
-        }
-      </p>
-      <table style="width:100%;border-collapse:collapse;margin-bottom:20px;">
-        <tr>
-          <td style="padding:10px 0;border-top:1px solid #E8E6DF;color:#5C5F68;">Spent so far</td>
-          <td style="padding:10px 0;border-top:1px solid #E8E6DF;text-align:right;font-weight:600;">${spent.toFixed(2)} ${currency}</td>
-        </tr>
-        <tr>
-          <td style="padding:10px 0;border-top:1px solid #E8E6DF;color:#5C5F68;">Monthly budget</td>
-          <td style="padding:10px 0;border-top:1px solid #E8E6DF;text-align:right;font-weight:600;">${budget.amount.toFixed(2)} ${currency}</td>
-        </tr>
-        <tr>
-          <td style="padding:10px 0;border-top:1px solid #E8E6DF;color:#5C5F68;">${remaining >= 0 ? "Remaining" : "Over by"}</td>
-          <td style="padding:10px 0;border-top:1px solid #E8E6DF;text-align:right;font-weight:600;color:${remaining >= 0 ? "#1A1D26" : "#FF6B4A"};">${Math.abs(remaining).toFixed(2)} ${currency}</td>
-        </tr>
-        <tr>
-          <td style="padding:10px 0;border-top:1px solid #E8E6DF;color:#5C5F68;">Used</td>
-          <td style="padding:10px 0;border-top:1px solid #E8E6DF;text-align:right;font-weight:600;">${percent.toFixed(0)}%</td>
-        </tr>
-      </table>
-      <p style="margin:0;color:#5C5F68;">
-        ${
-          threshold >= 100
-            ? "Take a look at your recent transactions in budgetco to see what pushed you over, and consider adjusting your budget if it no longer fits your spending."
-            : "You're on track for now — keep an eye on your spending for the rest of the month to stay within budget."
-        }
-      </p>
-    `);
-
-    await sendEmail({ to: user.email, subject, html });
-
-    const { error: updateError } = await supabase
+    const { data: budgets, error: budgetsError } = await supabase
       .from("budgets")
-      .update({
-        last_alert_sent: now.toISOString(),
-        last_alert_threshold: threshold,
-      })
-      .eq("id", budget.id);
-    if (updateError) throw updateError;
+      .select("id, user_id, amount, last_alert_sent, last_alert_threshold");
+    if (budgetsError) {
+      throw new Error(`Database error fetching budgets: ${budgetsError.message}`);
+    }
 
-    sent++;
+    let sent = 0;
+    const errors: string[] = [];
+
+    for (const budget of budgets ?? []) {
+      if (!budget.amount || budget.amount <= 0) continue;
+
+      const { data: user, error: userError } = await supabase
+        .from("users")
+        .select("email, name, currency")
+        .eq("clerk_id", budget.user_id)
+        .single();
+      if (userError || !user?.email) continue;
+
+      const { data: expenseRows, error: expenseError } = await supabase
+        .from("transactions")
+        .select("amount")
+        .eq("user_id", budget.user_id)
+        .eq("type", "EXPENSE")
+        .gte("date", startOfMonth());
+      if (expenseError) {
+        throw new Error(`Database error fetching expenses: ${expenseError.message}`);
+      }
+
+      const spent = (expenseRows ?? []).reduce((sum, tx) => sum + tx.amount, 0);
+      const percent = (spent / budget.amount) * 100;
+
+      // A previous alert only counts against this month's thresholds if it was
+      // actually sent this month — a new month means every threshold resets.
+      const alertedThisMonth =
+        budget.last_alert_sent &&
+        isSameMonth(new Date(budget.last_alert_sent), now)
+          ? budget.last_alert_threshold
+          : null;
+
+      const threshold = THRESHOLDS.find(
+        (t) => percent >= t && (alertedThisMonth === null || alertedThisMonth < t)
+      );
+      if (!threshold) continue;
+
+      const currency = user.currency ?? "USD";
+      const remaining = budget.amount - spent;
+      const monthLabel = now.toLocaleDateString("en-US", {
+        month: "long",
+        year: "numeric",
+        timeZone: "UTC",
+      });
+
+      const subject =
+        threshold >= 100
+          ? "budgetco Budget Alert: You've reached your monthly limit"
+          : `budgetco Budget Alert: ${threshold}% of your ${monthLabel} budget used`;
+
+      const html = wrapEmail(`
+        <p style="margin:0 0 16px;">Hi ${user.name ?? "there"},</p>
+        <p style="margin:0 0 20px;">
+          ${
+            threshold >= 100
+              ? `You've reached your <strong>${monthLabel}</strong> budget. Here's where things stand:`
+              : `You've used <strong>${threshold}%</strong> of your <strong>${monthLabel}</strong> budget — sending this early so you can pace the rest of the month.`
+          }
+        </p>
+        <table style="width:100%;border-collapse:collapse;margin-bottom:20px;">
+          <tr>
+            <td style="padding:10px 0;border-top:1px solid #E8E6DF;color:#5C5F68;">Spent so far</td>
+            <td style="padding:10px 0;border-top:1px solid #E8E6DF;text-align:right;font-weight:600;">${spent.toFixed(2)} ${currency}</td>
+          </tr>
+          <tr>
+            <td style="padding:10px 0;border-top:1px solid #E8E6DF;color:#5C5F68;">Monthly budget</td>
+            <td style="padding:10px 0;border-top:1px solid #E8E6DF;text-align:right;font-weight:600;">${budget.amount.toFixed(2)} ${currency}</td>
+          </tr>
+          <tr>
+            <td style="padding:10px 0;border-top:1px solid #E8E6DF;color:#5C5F68;">${remaining >= 0 ? "Remaining" : "Over by"}</td>
+            <td style="padding:10px 0;border-top:1px solid #E8E6DF;text-align:right;font-weight:600;color:${remaining >= 0 ? "#1A1D26" : "#FF6B4A"};">${Math.abs(remaining).toFixed(2)} ${currency}</td>
+          </tr>
+          <tr>
+            <td style="padding:10px 0;border-top:1px solid #E8E6DF;color:#5C5F68;">Used</td>
+            <td style="padding:10px 0;border-top:1px solid #E8E6DF;text-align:right;font-weight:600;">${percent.toFixed(0)}%</td>
+          </tr>
+        </table>
+        <p style="margin:0;color:#5C5F68;">
+          ${
+            threshold >= 100
+              ? "Take a look at your recent transactions in budgetco to see what pushed you over, and consider adjusting your budget if it no longer fits your spending."
+              : "You're on track for now — keep an eye on your spending for the rest of the month to stay within budget."
+          }
+        </p>
+      `);
+
+      try {
+        await sendEmail({ to: user.email, subject, html });
+
+        const { error: updateError } = await supabase
+          .from("budgets")
+          .update({
+            last_alert_sent: now.toISOString(),
+            last_alert_threshold: threshold,
+          })
+          .eq("id", budget.id);
+        if (updateError) {
+          console.error(`Database error updating budget alert: ${updateError.message}`);
+        }
+
+        sent++;
+      } catch (sendErr: any) {
+        console.error(`Error sending email to ${user.email}:`, sendErr);
+        errors.push(`${user.email}: ${sendErr.message ?? String(sendErr)}`);
+      }
+    }
+
+    return new Response(
+      JSON.stringify({
+        success: errors.length === 0,
+        sent,
+        failed: errors.length,
+        errors: errors.length > 0 ? errors : undefined,
+      }),
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+  } catch (err: any) {
+    console.error("check-budget-alerts error:", err);
+    return new Response(
+      JSON.stringify({
+        error: err.message ?? String(err),
+      }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
   }
-
-  return new Response(JSON.stringify({ sent }), {
-    headers: { "Content-Type": "application/json" },
-  });
 });

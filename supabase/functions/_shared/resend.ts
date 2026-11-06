@@ -9,8 +9,8 @@ export async function sendEmail({
   subject: string;
   html: string;
 }) {
-  const apiKey = Deno.env.get("RESEND_API_KEY");
-  const from = Deno.env.get("RESEND_FROM_EMAIL");
+  const apiKey = Deno.env.get("RESEND_API_KEY")?.trim();
+  const from = Deno.env.get("RESEND_FROM_EMAIL")?.trim();
   if (!apiKey) throw new Error("Missing RESEND_API_KEY");
   if (!from) throw new Error("Missing RESEND_FROM_EMAIL");
 

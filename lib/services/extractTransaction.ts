@@ -27,12 +27,15 @@ const RESPONSE_SCHEMA = {
 };
 
 async function callGemini(promptText: string, inlineData: { mimeType: string; data: string }) {
-  const apiKey = process.env.EXPO_PUBLIC_GEMINI_API_KEY;
+  const apiKey = process.env.EXPO_PUBLIC_GEMINI_API_KEY?.trim();
   if (!apiKey) throw new Error("Missing EXPO_PUBLIC_GEMINI_API_KEY");
 
-  const res = await fetch(`${GEMINI_URL}?key=${apiKey}`, {
+  const res = await fetch(GEMINI_URL, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      "x-goog-api-key": apiKey,
+    },
     body: JSON.stringify({
       contents: [
         {

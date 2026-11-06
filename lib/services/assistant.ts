@@ -79,7 +79,7 @@ export async function askAssistant(
   budget: Budget | null,
   currency: string
 ) {
-  const apiKey = process.env.EXPO_PUBLIC_GEMINI_API_KEY;
+  const apiKey = process.env.EXPO_PUBLIC_GEMINI_API_KEY?.trim();
   if (!apiKey) throw new Error("Missing EXPO_PUBLIC_GEMINI_API_KEY");
 
   const context = buildContext(transactions, budget, currency);
@@ -90,9 +90,12 @@ ${context}
 
 User question: ${question}`;
 
-  const res = await fetch(`${GEMINI_URL}?key=${apiKey}`, {
+  const res = await fetch(GEMINI_URL, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      "x-goog-api-key": apiKey,
+    },
     body: JSON.stringify({
       contents: [{ role: "user", parts: [{ text: prompt }] }],
     }),
